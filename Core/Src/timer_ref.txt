@@ -1,0 +1,132 @@
+/*************************************************************************
+	> File Name: timer.c
+	> Author: ma6174
+	> Mail: ma6174@163.com 
+	> Created Time: Sun Apr 26 14:44:38 2020
+ ************************************************************************/
+
+#include "timer_func.h"
+
+
+void MX_TIMER_Init(void)
+{
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+  //Enabler Timer clock
+  __HAL_RCC_TIM2_CLK_ENABLE();
+//  mw32(0x40021038,0x10020001); // Enable TIM2 clock
+  //Configure Timer base
+  testTimer.Instance = TIM2;
+  testTimer.Instance->PSC = 0;
+  testTimer.Instance->ARR = 0xFFFF;
+//  testTimer.Instance->CR1 = TIM_CR1_CEN;
+
+ /* Configure interrupt */ 
+  HAL_NVIC_SetPriority(TIM2_IRQn, 1, 0);
+  HAL_NVIC_EnableIRQ(TIM2_IRQn);
+
+//  MX_TIMEROC_Init();
+  MX_TIMEROC_RES_Init();
+
+
+  /*Configure GPIO pin : D6_Pin, TIM2, IC3, PB10 */
+  GPIO_InitStruct.Pin = GPIO_PIN_10;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Alternate= GPIO_AF2_TIM2;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PB11, TIM2, IC4 */
+  GPIO_InitStruct.Pin = GPIO_PIN_11;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Alternate= GPIO_AF2_TIM2;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+
+  /*Configure GPIO pin : PA0, OC1 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0;
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP; // Change to OD if there is 3.3V pullup
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  GPIO_InitStruct.Alternate= GPIO_AF2_TIM2;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+
+/* Timer needs to be enabled by writing 0x01 to CR1 */
+  MX_TIMER_Enable_OS();
+
+}
+
+void MX_TIMERIC_Init(void)
+{
+  //Disable Timer enable
+  testTimer.Instance->CR1 = 0x00;
+  //Set timer base
+  testTimer.Instance->PSC = 0;
+  testTimer.Instance->ARR = 0xFFFF;
+
+  //Configure input capture IC3 and IC4, PB10 --> IC3/4
+  testTimer.Instance->SR = 0x0000; // Clean interrupt status register
+  testTimer.Instance->CCMR2 = 0x0201; // IC4 = TI3, IC3 = TI3
+  testTimer.Instance->CCER = 0x3100; // IC4 falling edge, IC3 rising edge
+  testTimer.Instance->DIER = 0x08; // IC3 interrupt enabled (rising edge)
+//  testTimer.Instance->CR1 = TIM_CR1_CEN;
+}
+
+/* OC uses CC1 channel, wake signal generator*/
+void MX_TIMEROC_Init(void)
+{
+  //Disable Timer enable
+  testTimer.Instance->CR1 = 0x00;
+  //Set/Reset timer base
+  testTimer.Instance->CNT = 0;
+  testTimer.Instance->PSC = 0;
+  testTimer.Instance->ARR = 0xFF;
+
+  //Configure input capture IC3 and IC4, PB10 --> IC3/4
+  testTimer.Instance->SR = 0x0000; // Clean interrupt status register
+  testTimer.Instance->CCMR1 = 0x0064; // OC1, PWM1 mode - active low when CNT<CCR
+  testTimer.Instance->CCER = 0x0001; // OC1 enable, active high 
+  testTimer.Instance->DIER = 0x00; // Disable interrupt
+  testTimer.Instance->CCR1 = 0xff-0x33; // Set comparison register
+//  testTimer.Instance->CR1 = 0x09; // One shot + enable
+}
+
+
+/* OC uses CC1 channel, Reponse initiator*/
+void MX_TIMEROC_RES_Init(void)
+{
+  uint8_t timer_duration = 0x30;
+
+  //Disable Timer enable
+  testTimer.Instance->CR1 = 0x00;
+  //Set/Reset timer base
+  testTimer.Instance->CNT = 0;
+  testTimer.Instance->PSC = 0;
+  testTimer.Instance->ARR = timer_duration; // 10us per bit
+
+  //Configure input capture IC3 and IC4, PB10 --> IC3/4
+  testTimer.Instance->SR = 0x0000; // Clean interrupt status register
+  testTimer.Instance->CCMR1 = 0x0064; // OC1, PWM1 mode - active low when CNT<CCR
+  testTimer.Instance->CCER = 0x0001; // OC1 enable, active high 
+  testTimer.Instance->DIER = 0x02; // OC1 interrupt
+  testTimer.Instance->CCR1 = timer_duration-0x0A; // Set comparison register
+//  testTimer.Instance->CR1 = 0x09; // One shot + enable
+}
+
+void MX_TIMER_Enable(void)
+{
+	testTimer.Instance->CR1 = 0x01;
+}
+
+// One shot 
+void MX_TIMER_Enable_OS(void)
+{
+	testTimer.Instance->CR1 = 0x09;
+}
+
+void MX_TIMER_Disable(void)
+{
+	testTimer.Instance->CR1 = 0x00;
+}

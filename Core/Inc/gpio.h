@@ -32,6 +32,10 @@
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN Private defines */
+#define SRF_VCC GPIO_PIN_2 // PA2
+#define SRF_TRIG GPIO_PIN_10 // PA10
+#define SRF_ECHO GPIO_PIN_3 // PB3
+#define SRF_GND GPIO_PIN_4 // PB4
 
 /* USER CODE END Private defines */
 

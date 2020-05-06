@@ -38,11 +38,17 @@ BUILD_DIR = build
 C_SOURCES =  \
 Core/Src/main.c \
 Core/Src/gpio.c \
+Core/Src/user_func.c \
+Core/Src/fifo.c \
+Core/Src/uart.c \
 Core/Src/tim.c \
 Core/Src/stm32l0xx_it.c \
 Core/Src/stm32l0xx_hal_msp.c \
 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim.c \
 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_tim_ex.c \
+Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_uart.c \
+Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_usart.c \
+Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_uart_ex.c \
 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal.c \
 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_i2c.c \
 Drivers/STM32L0xx_HAL_Driver/Src/stm32l0xx_hal_i2c_ex.c \
