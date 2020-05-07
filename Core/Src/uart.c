@@ -8,6 +8,11 @@
 #include<stdio.h>
 #include "uart.h"
 #include "stm32l0xx_hal_uart.h"
+#include "fifo.h"
+
+
+UART_HandleTypeDef testUartHandle;
+extern fifo_typedef rxfifo;
 
 void MX_USART2_UART_Init(void)
 {
@@ -48,4 +53,30 @@ void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 2 */
 
+}
+
+void USART2_IRQHandler(void)
+{
+  /* USER CODE BEGIN USART2_IRQn 0 */
+  // As the processing time is much faster in comparison to the uart baudrate
+  // The UART interrupt request is usually completed before the next interrupt
+
+  uint32_t volatile isrflags   = READ_REG(testUartHandle.Instance->ISR);
+//  uint32_t cr1its     = READ_REG(testUartHandle.Instance->CR1);
+//  uint32_t cr3its     = READ_REG(testUartHandle.Instance->CR3);
+  uint8_t data = 0;
+
+  /* USER CODE END USART2_IRQn 0 */
+ /*HAL_UART_IRQHandler(&testUartHandle);*/
+  /* USER CODE BEGIN USART2_IRQn 1 */
+/* UART in mode Receiver ---------------------------------------------------*/
+    if((isrflags & USART_ISR_RXNE) != 0U)
+    {
+      data = testUartHandle.Instance->RDR; //RXNE is clear when RDR is read to a buffer
+      fifoWrite(&rxfifo,data);
+//      testUartHandle.Instance->TDR = data;
+//      return;
+    }
+    else testUartHandle.Instance->ISR = 0;
+  /* USER CODE END USART2_IRQn 1 */
 }

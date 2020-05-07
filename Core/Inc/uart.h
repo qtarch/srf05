@@ -7,6 +7,5 @@
 
 #include "main.h"
 
-UART_HandleTypeDef testUartHandle;
-
 void MX_USART2_UART_Init(void);
+void USART2_IRQHandler(void);

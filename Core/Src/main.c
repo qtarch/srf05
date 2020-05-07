@@ -21,12 +21,15 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "tim.h"
+#include "fifo.h"
 #include "gpio.h"
 #include "uart.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+extern UART_HandleTypeDef testUartHandle;
+extern TIM_HandleTypeDef testTimer;
+fifo_typedef rxfifo;
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/

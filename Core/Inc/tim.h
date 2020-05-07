@@ -30,7 +30,7 @@
 
 /* USER CODE END Includes */
 
-extern TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim2;
 
 /* USER CODE BEGIN Private defines */
 
@@ -39,6 +39,7 @@ extern TIM_HandleTypeDef htim2;
 void MX_TIM2_Init(void);
 
 /* USER CODE BEGIN Prototypes */
+void TIM2_IRQHandler(void);
 
 /* USER CODE END Prototypes */
 
