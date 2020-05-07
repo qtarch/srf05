@@ -21,10 +21,10 @@
 #include "tim.h"
 
 /* USER CODE BEGIN 0 */
-
+TIM_HandleTypeDef htim2;
 /* USER CODE END 0 */
 
-TIM_HandleTypeDef htim2;
+//TIM_HandleTypeDef htim2;
 
 /* TIM2 init function */
 void MX_TIM2_Init(void)
@@ -111,6 +111,37 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
 } 
 
 /* USER CODE BEGIN 1 */
+void TIM2_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM20 */
+  // As the processing time is much faster in comparison to the uart baudrate
+  // The UART interrupt request is usually completed before the next interrupt
+
+  uint32_t volatile isrflags   = READ_REG(htim2.Instance->SR);
+  uint16_t data_rising = 0; // CC register is 16bits
+  uint16_t data_falling = 0; // CC register is 16bits
+  uint16_t data = 0;
+
+/*
+    if((isrflags & 0x08) != 0U) // CC3IF
+    {
+      data_rising = testTimer.Instance->CCR3; //Rising edge capture counter
+      data_falling = testTimer.Instance->CCR4; //Falling edge capture counter
+      if (data_rising>data_falling) data = data_rising-data_falling; else data = 0xffff-data_falling+data_rising;
+
+      fifoWrite(&aidfifo,(uint8_t) ((data>>8)&0xFF)); //Store higher 8bits
+      fifoWrite(&aidfifo,(uint8_t) (data&0xFF)); //Store lower 8bits
+    }
+    */
+
+    if((isrflags & 0x02) != 0U) // CC1 interrupt
+    {
+      if(htim2.Instance->CCR1 > 0x0A) htim2.Instance->CCR1 = 0x0A;
+      else htim2.Instance->CCR1 = 0x56;
+    }
+    htim2.Instance->SR=0;
+  /* USER CODE END USART2_IRQn 1 */
+}
 
 /* USER CODE END 1 */
 
