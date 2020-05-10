@@ -32,10 +32,15 @@
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN Private defines */
-#define SRF_VCC GPIO_PIN_2 // PA2
-#define SRF_TRIG GPIO_PIN_10 // PA10
-#define SRF_ECHO GPIO_PIN_3 // PB3
-#define SRF_GND GPIO_PIN_4 // PB4
+#define UART_TX GPIO_PIN_2 // PA2, USART2, TX
+#define UART_RX GPIO_PIN_3 // PA3, USART2, RX
+#define SRF_VCC GPIO_PIN_3 // PB3, GPIO, PP
+#define SRF_TRIG GPIO_PIN_5 // PB5, GPIO, PP
+#define SRF_ECHO GPIO_PIN_4 // PB4, TIM3_CH1, IC1
+#define SRF_OUT GPIO_PIN_10 // PB10, NC
+#define SRF_GND GPIO_PIN_8 // PA8, GPIO, PP
+#define LD2 GPIO_PIN_5 // LED2, PA5, OD
+#define BTN GPIO_PIN_14 // User Button, PC14, PP
 
 /* USER CODE END Private defines */
 

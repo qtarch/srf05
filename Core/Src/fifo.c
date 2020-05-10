@@ -103,10 +103,10 @@ void fifoParser(fifo_typedef *fifo)
 			{
 				if((testCmd.param1!=NULL)&&(testCmd.param2!=NULL))
 				{
-					uint16_t TimerCnt = testTimer.Instance->CNT; // Base timer counter
-					uint16_t TimerCC3Cnt = testTimer.Instance->CCR3; // input capture 3 register
-					uint16_t TimerCC4Cnt = testTimer.Instance->CCR4; // input capture 4 register
-					uint16_t TimerSR = testTimer.Instance->DIER; // Status register
+					uint16_t TimerCnt = htim3.Instance->CNT; // Base timer counter
+					uint16_t TimerCC3Cnt = htim3.Instance->CCR3; // input capture 3 register
+					uint16_t TimerCC4Cnt = htim3.Instance->CCR4; // input capture 4 register
+					uint16_t TimerSR = htim3.Instance->DIER; // Status register
 
 					sprintf(response,"<OK:%0#6x, %0#6x, %0#6x, %0#6x\n", (unsigned int) TimerCnt,(unsigned int) TimerCC3Cnt, (unsigned int) TimerCC4Cnt, (unsigned int) TimerSR); // output 4bytes 
 					res_length = 35;
@@ -117,41 +117,12 @@ void fifoParser(fifo_typedef *fifo)
 					sprintf(response,"<OK: Timer go\n"); // help
 					res_length = 14;
 				}
-				if(strcmp(testCmd.param1,"go-os")==0)
-				{
-					MX_TIMER_Enable_OS();
-					sprintf(response,"<OK: Timer go one shot\n"); // help
-					res_length = 23;
-				}
 				if(strcmp(testCmd.param1,"stop")==0)
 				{
 					MX_TIMER_Disable();
 					sprintf(response,"<OK: Timer stop\n"); // help
 					res_length = 16;
 				}
-				/*
-				if(strcmp(testCmd.param1,"on")==0)
-				{
-					uint16_t TimerCR1 = testTimer.Instance->CR1;
-					testTimer.Instance->CR1 = TimerCR1 | 0x0001;
-					sprintf(response,"< Timer on\n"); // help
-					res_length = 11;
-				}
-				if(strcmp(testCmd.param1,"off")==0)
-				{
-					uint16_t TimerCR1 = testTimer.Instance->CR1;
-					testTimer.Instance->CR1 = TimerCR1 & 0xFFFE;
-					sprintf(response,"< Timer off\n"); // help
-					res_length = 12;
-				}
-				if(strcmp(testCmd.param1,"data")==0)
-				{
-					uint16_t TimerCR1 = testTimer.Instance->CR1;
-					testTimer.Instance->CR1 = TimerCR1 & 0xFFFE;
-					*response = aidfifo.buf;
-					res_length = 129;
-				}
-				*/
 				HAL_UART_Transmit(&testUartHandle, (uint8_t *) response,res_length,1000); // output, the length of output is considered 
 			}
 

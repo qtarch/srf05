@@ -19,127 +19,88 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "tim.h"
+#include "fifo.h"
 
 /* USER CODE BEGIN 0 */
-TIM_HandleTypeDef htim2;
+TIM_HandleTypeDef htim3;
+extern fifo_typedef SRF_fifo;
 /* USER CODE END 0 */
 
-//TIM_HandleTypeDef htim2;
+//TIM_HandleTypeDef htim3;
 
-/* TIM2 init function */
-void MX_TIM2_Init(void)
+/* TIM3 init function */
+
+void MX_TIMER_Init(void)
 {
-  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
-  TIM_MasterConfigTypeDef sMasterConfig = {0};
-  TIM_IC_InitTypeDef sConfigIC = {0};
+  //Enabler Timer clock
+  __HAL_RCC_TIM3_CLK_ENABLE();
+//  mw32(0x40021038,0x10020001); // Enable TIM3 clock
+  //Configure Timer base
+  htim3.Instance = TIM3;
+  htim3.Instance->PSC = 0;
+  htim3.Instance->ARR = 0xFFFF;
+//  htim3.Instance->CR1 = TIM_CR1_CEN;
 
-  htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 0;
-  htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 0;
-  htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
-  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
-  if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
-  if (HAL_TIM_ConfigClockSource(&htim2, &sClockSourceConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  if (HAL_TIM_IC_Init(&htim2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
-  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
-  if (HAL_TIMEx_MasterConfigSynchronization(&htim2, &sMasterConfig) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sConfigIC.ICPolarity = TIM_INPUTCHANNELPOLARITY_RISING;
-  sConfigIC.ICSelection = TIM_ICSELECTION_INDIRECTTI;
-  sConfigIC.ICPrescaler = TIM_ICPSC_DIV1;
-  sConfigIC.ICFilter = 0;
-  if (HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sConfigIC.ICSelection = TIM_ICSELECTION_DIRECTTI;
-  if (HAL_TIM_IC_ConfigChannel(&htim2, &sConfigIC, TIM_CHANNEL_2) != HAL_OK)
-  {
-    Error_Handler();
-  }
+ /* Configure interrupt */ 
+  HAL_NVIC_SetPriority(TIM3_IRQn, 1, 0);
+  HAL_NVIC_EnableIRQ(TIM3_IRQn);
 
+//  MX_TIMERIC_Init();
+  MX_TIMERIC_Init();
+
+/* Timer needs to be enabled by writing 0x01 to CR1 */
+  MX_TIMER_Enable();
 }
 
-void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* tim_baseHandle)
+void MX_TIMERIC_Init(void)
 {
-  if(tim_baseHandle->Instance==TIM2)
-  {
-  /* USER CODE BEGIN TIM2_MspInit 0 */
+  //Disable Timer before changing the IC registers
+  htim3.Instance->CR1 = 0x00;
+  //Set timer base
+  htim3.Instance->PSC = 0;
+  htim3.Instance->ARR = 0xFFFF;
 
-  /* USER CODE END TIM2_MspInit 0 */
-    /* TIM2 clock enable */
-    __HAL_RCC_TIM2_CLK_ENABLE();
-
-  /* USER CODE END TIM2_MspInit 1 */
-  }
+  //Configure input capture IC1 and IC2, PB4 --> IC1/2
+  htim3.Instance->SR = 0x0000; // Clean interrupt status register
+  htim3.Instance->CCMR1 = 0x0201; // IC2 = TI1, IC1 = TI1
+  htim3.Instance->CCER = 0x0031; // IC2 falling edge, IC1 rising edge
+  htim3.Instance->DIER = 0x04; // IC2 interrupt enabled (falling edge)
+//  htim3.Instance->CR1 = TIM_CR1_CEN;
 }
 
-void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
+void MX_TIMER_Enable(void)
 {
+	htim3.Instance->CR1 = 0x01;
+}
 
-  if(tim_baseHandle->Instance==TIM2)
-  {
-  /* USER CODE BEGIN TIM2_MspDeInit 0 */
-
-  /* USER CODE END TIM2_MspDeInit 0 */
-    /* Peripheral clock disable */
-    __HAL_RCC_TIM2_CLK_DISABLE();
-  
-    /**TIM2 GPIO Configuration    
-    PB3     ------> TIM2_CH2 
-    */
-    HAL_GPIO_DeInit(GPIOB, GPIO_PIN_3);
-
-  /* USER CODE BEGIN TIM2_MspDeInit 1 */
-
-  /* USER CODE END TIM2_MspDeInit 1 */
-  }
-} 
+void MX_TIMER_Disable(void)
+{
+	htim3.Instance->CR1 = 0x00;
+}
 
 /* USER CODE BEGIN 1 */
-void TIM2_IRQHandler(void)
+void TIM3_IRQHandler(void)
 {
-  /* USER CODE BEGIN TIM20 */
+  /* USER CODE BEGIN TIM30 */
   // As the processing time is much faster in comparison to the uart baudrate
   // The UART interrupt request is usually completed before the next interrupt
 
-  uint32_t volatile isrflags   = READ_REG(htim2.Instance->SR);
+  uint32_t volatile isrflags   = READ_REG(htim3.Instance->SR);
   uint16_t data_rising = 0; // CC register is 16bits
   uint16_t data_falling = 0; // CC register is 16bits
   uint16_t data = 0;
 
-/*
-    if((isrflags & 0x08) != 0U) // CC3IF
-    {
-      data_rising = testTimer.Instance->CCR3; //Rising edge capture counter
-      data_falling = testTimer.Instance->CCR4; //Falling edge capture counter
-      if (data_rising>data_falling) data = data_rising-data_falling; else data = 0xffff-data_falling+data_rising;
+  if((isrflags & 0x02) != 0U) // CC2IF
+  {
+    data_rising = htim3.Instance->CCR1; //Rising edge capture counter
+    data_falling = htim3.Instance->CCR2; //Falling edge capture counter
+    if (data_rising<data_falling) data = data_falling-data_rising; 
+    else data = 0xffff+data_falling-data_rising;
 
-      fifoWrite(&aidfifo,(uint8_t) ((data>>8)&0xFF)); //Store higher 8bits
-      fifoWrite(&aidfifo,(uint8_t) (data&0xFF)); //Store lower 8bits
-    }
-    */
-
-    if((isrflags & 0x02) != 0U) // CC1 interrupt
-    {
-      if(htim2.Instance->CCR1 > 0x0A) htim2.Instance->CCR1 = 0x0A;
-      else htim2.Instance->CCR1 = 0x56;
-    }
-    htim2.Instance->SR=0;
+    fifoWrite(&SRF_fifo,(uint8_t) ((data>>8)&0xFF)); //Store higher 8bits
+    fifoWrite(&SRF_fifo,(uint8_t) (data&0xFF)); //Store lower 8bits
+  }
+  htim3.Instance->SR=0;
   /* USER CODE END USART2_IRQn 1 */
 }
 

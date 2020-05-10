@@ -30,17 +30,17 @@
 
 /* USER CODE END Includes */
 
-TIM_HandleTypeDef htim2;
 
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
 
-void MX_TIM2_Init(void);
-
 /* USER CODE BEGIN Prototypes */
-void TIM2_IRQHandler(void);
-
+void MX_TIMER_Init(void);
+void MX_TIMERIC_Init(void);
+void MX_TIMER_Enable(void);
+void MX_TIMER_Disable(void);
+void TIM3_IRQHandler(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

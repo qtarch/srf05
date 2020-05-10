@@ -9,7 +9,7 @@
 //#include "stm32l0xx_hal_uart.h"
 
 extern UART_HandleTypeDef testUartHandle;
-extern TIM_HandleTypeDef testTimer;
+extern TIM_HandleTypeDef htim3;
 uint32_t* ADDR;
 
 // uart fifo type define
