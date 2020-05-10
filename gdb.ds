@@ -1,0 +1,84 @@
+tar ext:4242
+set pagination off
+load
+
+monitor reset
+b main
+c
+
+x/tw 0x40004400 
+#UART_CR1
+x/tw 0x40004404 
+#UART_CR2
+x/tw 0x40004408 
+#UART_CR3
+x/tw 0x4000440C 
+#UART_BRR
+x/tw 0x40004410 
+#UART_GTPR
+x/tw 0x40004414 
+#UART_RTOR
+x/tw 0x40004418 
+#UART_RQR
+x/tw 0x4000441C 
+#UART_ISR
+x/tw 0x40004420 
+#UART_ICR
+x/tw 0x40004424 
+#UART_RDR
+x/tw 0x40004428 
+#UART_TDR
+
+b mr32
+c
+
+x/tw 0x40004400 
+#UART_CR1
+x/tw 0x40004404 
+#UART_CR2
+x/tw 0x40004408 
+#UART_CR3
+x/tw 0x4000440C 
+#UART_BRR
+x/tw 0x40004410 
+#UART_GTPR
+x/tw 0x40004414 
+#UART_RTOR
+x/tw 0x40004418 
+#UART_RQR
+x/tw 0x4000441C 
+#UART_ISR
+x/tw 0x40004420 
+#UART_ICR
+x/tw 0x40004424 
+#UART_RDR
+x/tw 0x40004428 
+#UART_TDR
+
+
+# RCC_CR
+x/tw 0x40021000 
+x/tw 0x40021004
+x/tw 0x40021008
+x/tw 0x4002100C
+x/tw 0x40021010
+x/tw 0x40021014
+x/tw 0x40021018
+x/tw 0x4002101C
+x/tw 0x40021020
+x/tw 0x40021024
+x/tw 0x40021028
+x/tw 0x4002102C
+x/tw 0x40021030
+x/tw 0x40021034
+x/tw 0x40021038
+x/tw 0x4002103C
+x/tw 0x40021040
+x/tw 0x40021044
+x/tw 0x40021048
+x/tw 0x4002104C
+x/tw 0x40021050
+
+
+
+
