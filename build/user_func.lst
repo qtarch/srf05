@@ -1,0 +1,1290 @@
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 1
+
+
+   1              		.cpu cortex-m0plus
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"user_func.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.__io_putchar,"ax",%progbits
+  16              		.align	1
+  17              		.global	__io_putchar
+  18              		.arch armv6s-m
+  19              		.syntax unified
+  20              		.code	16
+  21              		.thumb_func
+  22              		.fpu softvfp
+  24              	__io_putchar:
+  25              	.LVL0:
+  26              	.LFB37:
+  27              		.file 1 "Core/Src/user_func.c"
+   1:Core/Src/user_func.c **** /* Includes ------------------------------------------------------------------*/
+   2:Core/Src/user_func.c **** #include "user_func.h"
+   3:Core/Src/user_func.c **** #include <stdbool.h>
+   4:Core/Src/user_func.c **** #include "stm32l0xx_hal_uart.h"
+   5:Core/Src/user_func.c **** 
+   6:Core/Src/user_func.c **** PUTCHAR_PROTOTYPE
+   7:Core/Src/user_func.c **** {
+  28              		.loc 1 7 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 8
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 7 1 is_stmt 0 view .LVU1
+  33 0000 00B5     		push	{lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 4
+  36              		.cfi_offset 14, -4
+  37 0002 83B0     		sub	sp, sp, #12
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 16
+  40 0004 0190     		str	r0, [sp, #4]
+   8:Core/Src/user_func.c ****   /* Place your implementation of fputc here */
+   9:Core/Src/user_func.c ****   /* e.g. write a character to the USART1 and Loop until the end of transmission */
+  10:Core/Src/user_func.c ****   HAL_UART_Transmit(&testUartHandle, (uint8_t *)&ch, 1, 0xFFFF);
+  41              		.loc 1 10 3 is_stmt 1 view .LVU2
+  42 0006 044B     		ldr	r3, .L2
+  43 0008 0122     		movs	r2, #1
+  44 000a 01A9     		add	r1, sp, #4
+  45 000c 0348     		ldr	r0, .L2+4
+  46              	.LVL1:
+  47              		.loc 1 10 3 is_stmt 0 view .LVU3
+  48 000e FFF7FEFF 		bl	HAL_UART_Transmit
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 2
+
+
+  49              	.LVL2:
+  11:Core/Src/user_func.c **** 
+  12:Core/Src/user_func.c ****   return ch;
+  50              		.loc 1 12 3 is_stmt 1 view .LVU4
+  13:Core/Src/user_func.c **** }
+  51              		.loc 1 13 1 is_stmt 0 view .LVU5
+  52 0012 0198     		ldr	r0, [sp, #4]
+  53 0014 03B0     		add	sp, sp, #12
+  54              		@ sp needed
+  55 0016 00BD     		pop	{pc}
+  56              	.L3:
+  57              		.align	2
+  58              	.L2:
+  59 0018 FFFF0000 		.word	65535
+  60 001c 00000000 		.word	testUartHandle
+  61              		.cfi_endproc
+  62              	.LFE37:
+  64              		.section	.text._write,"ax",%progbits
+  65              		.align	1
+  66              		.global	_write
+  67              		.syntax unified
+  68              		.code	16
+  69              		.thumb_func
+  70              		.fpu softvfp
+  72              	_write:
+  73              	.LVL3:
+  74              	.LFB38:
+  14:Core/Src/user_func.c **** 
+  15:Core/Src/user_func.c **** int _write(int file, char *data, int len)
+  16:Core/Src/user_func.c **** {
+  75              		.loc 1 16 1 is_stmt 1 view -0
+  76              		.cfi_startproc
+  77              		@ args = 0, pretend = 0, frame = 0
+  78              		@ frame_needed = 0, uses_anonymous_args = 0
+  79              		.loc 1 16 1 is_stmt 0 view .LVU7
+  80 0000 10B5     		push	{r4, lr}
+  81              	.LCFI2:
+  82              		.cfi_def_cfa_offset 8
+  83              		.cfi_offset 4, -8
+  84              		.cfi_offset 14, -4
+  85 0002 1400     		movs	r4, r2
+  17:Core/Src/user_func.c ****    if ((file != STDOUT_FILENO) && (file != STDERR_FILENO))
+  86              		.loc 1 17 4 is_stmt 1 view .LVU8
+  87              		.loc 1 17 32 is_stmt 0 view .LVU9
+  88 0004 0138     		subs	r0, r0, #1
+  89              	.LVL4:
+  90              		.loc 1 17 7 view .LVU10
+  91 0006 0128     		cmp	r0, #1
+  92 0008 09D8     		bhi	.L8
+  18:Core/Src/user_func.c ****    {
+  19:Core/Src/user_func.c ****       errno = EBADF;
+  20:Core/Src/user_func.c ****       return -1;
+  21:Core/Src/user_func.c ****    }
+  22:Core/Src/user_func.c **** 
+  23:Core/Src/user_func.c ****    // arbitrary timeout 1000
+  24:Core/Src/user_func.c ****    HAL_StatusTypeDef status =
+  93              		.loc 1 24 4 is_stmt 1 view .LVU11
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 3
+
+
+  25:Core/Src/user_func.c ****       HAL_UART_Transmit(&testUartHandle, (uint8_t*)data, len, 1000);
+  94              		.loc 1 25 7 is_stmt 0 view .LVU12
+  95 000a FA23     		movs	r3, #250
+  96 000c 92B2     		uxth	r2, r2
+  97              	.LVL5:
+  98              		.loc 1 25 7 view .LVU13
+  99 000e 9B00     		lsls	r3, r3, #2
+ 100 0010 0748     		ldr	r0, .L9
+ 101              	.LVL6:
+ 102              		.loc 1 25 7 view .LVU14
+ 103 0012 FFF7FEFF 		bl	HAL_UART_Transmit
+ 104              	.LVL7:
+  26:Core/Src/user_func.c **** 
+  27:Core/Src/user_func.c ****    // return # of bytes written - as best we can tell
+  28:Core/Src/user_func.c ****    return (status == HAL_OK ? len : 0);
+ 105              		.loc 1 28 4 is_stmt 1 view .LVU15
+ 106              		.loc 1 28 35 is_stmt 0 view .LVU16
+ 107 0016 0028     		cmp	r0, #0
+ 108 0018 08D1     		bne	.L7
+ 109 001a 2000     		movs	r0, r4
+ 110              	.LVL8:
+ 111              	.L4:
+  29:Core/Src/user_func.c **** }
+ 112              		.loc 1 29 1 view .LVU17
+ 113              		@ sp needed
+ 114              	.LVL9:
+ 115              		.loc 1 29 1 view .LVU18
+ 116 001c 10BD     		pop	{r4, pc}
+ 117              	.LVL10:
+ 118              	.L8:
+  19:Core/Src/user_func.c ****       return -1;
+ 119              		.loc 1 19 7 is_stmt 1 view .LVU19
+ 120 001e FFF7FEFF 		bl	__errno
+ 121              	.LVL11:
+  19:Core/Src/user_func.c ****       return -1;
+ 122              		.loc 1 19 13 is_stmt 0 view .LVU20
+ 123 0022 0923     		movs	r3, #9
+ 124 0024 0360     		str	r3, [r0]
+  20:Core/Src/user_func.c ****    }
+ 125              		.loc 1 20 7 is_stmt 1 view .LVU21
+  20:Core/Src/user_func.c ****    }
+ 126              		.loc 1 20 14 is_stmt 0 view .LVU22
+ 127 0026 0120     		movs	r0, #1
+ 128 0028 4042     		rsbs	r0, r0, #0
+ 129 002a F7E7     		b	.L4
+ 130              	.LVL12:
+ 131              	.L7:
+  28:Core/Src/user_func.c **** }
+ 132              		.loc 1 28 35 view .LVU23
+ 133 002c 0020     		movs	r0, #0
+ 134              	.LVL13:
+  28:Core/Src/user_func.c **** }
+ 135              		.loc 1 28 35 view .LVU24
+ 136 002e F5E7     		b	.L4
+ 137              	.L10:
+ 138              		.align	2
+ 139              	.L9:
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 4
+
+
+ 140 0030 00000000 		.word	testUartHandle
+ 141              		.cfi_endproc
+ 142              	.LFE38:
+ 144              		.section	.rodata.printfloat.str1.4,"aMS",%progbits,1
+ 145              		.align	2
+ 146              	.LC2:
+ 147 0000 00       		.ascii	"\000"
+ 148 0001 000000   		.align	2
+ 149              	.LC4:
+ 150 0004 2D00     		.ascii	"-\000"
+ 151              		.global	__aeabi_fcmplt
+ 152              		.global	__aeabi_f2iz
+ 153              		.global	__aeabi_i2f
+ 154              		.global	__aeabi_fsub
+ 155              		.global	__aeabi_fmul
+ 156 0006 0000     		.align	2
+ 157              	.LC6:
+ 158 0008 25732564 		.ascii	"%s%d.%06d\015\012\000"
+ 158      2E253036 
+ 158      640D0A00 
+ 159              		.section	.text.printfloat,"ax",%progbits
+ 160              		.align	1
+ 161              		.global	printfloat
+ 162              		.syntax unified
+ 163              		.code	16
+ 164              		.thumb_func
+ 165              		.fpu softvfp
+ 167              	printfloat:
+ 168              	.LVL14:
+ 169              	.LFB39:
+  30:Core/Src/user_func.c **** 
+  31:Core/Src/user_func.c **** // Print a floating number
+  32:Core/Src/user_func.c **** void printfloat(float num)
+  33:Core/Src/user_func.c **** {
+ 170              		.loc 1 33 1 is_stmt 1 view -0
+ 171              		.cfi_startproc
+ 172              		@ args = 0, pretend = 0, frame = 0
+ 173              		@ frame_needed = 0, uses_anonymous_args = 0
+ 174              		.loc 1 33 1 is_stmt 0 view .LVU26
+ 175 0000 70B5     		push	{r4, r5, r6, lr}
+ 176              	.LCFI3:
+ 177              		.cfi_def_cfa_offset 16
+ 178              		.cfi_offset 4, -16
+ 179              		.cfi_offset 5, -12
+ 180              		.cfi_offset 6, -8
+ 181              		.cfi_offset 14, -4
+ 182 0002 041C     		adds	r4, r0, #0
+  34:Core/Src/user_func.c **** 	char *tmpSign = (num < 0) ? "-" : "";
+ 183              		.loc 1 34 2 is_stmt 1 view .LVU27
+ 184              		.loc 1 34 34 is_stmt 0 view .LVU28
+ 185 0004 0021     		movs	r1, #0
+ 186 0006 FFF7FEFF 		bl	__aeabi_fcmplt
+ 187              	.LVL15:
+ 188              		.loc 1 34 34 view .LVU29
+ 189 000a 0028     		cmp	r0, #0
+ 190 000c 1CD1     		bne	.L20
+ 191 000e 124E     		ldr	r6, .L22
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 5
+
+
+ 192              	.L12:
+ 193              	.LVL16:
+  35:Core/Src/user_func.c **** 	float tmpVal = (num < 0) ? -num : num;
+ 194              		.loc 1 35 2 is_stmt 1 discriminator 4 view .LVU30
+ 195              		.loc 1 35 34 is_stmt 0 discriminator 4 view .LVU31
+ 196 0010 0021     		movs	r1, #0
+ 197 0012 201C     		adds	r0, r4, #0
+ 198 0014 FFF7FEFF 		bl	__aeabi_fcmplt
+ 199              	.LVL17:
+ 200 0018 0028     		cmp	r0, #0
+ 201 001a 17D1     		bne	.L21
+ 202              	.LVL18:
+ 203              	.L14:
+  36:Core/Src/user_func.c **** 
+  37:Core/Src/user_func.c **** 	int tmpInt1 = tmpVal;                  // Get the integer (678).
+ 204              		.loc 1 37 2 is_stmt 1 discriminator 4 view .LVU32
+ 205              		.loc 1 37 6 is_stmt 0 discriminator 4 view .LVU33
+ 206 001c 201C     		adds	r0, r4, #0
+ 207 001e FFF7FEFF 		bl	__aeabi_f2iz
+ 208              	.LVL19:
+ 209 0022 0500     		movs	r5, r0
+ 210              	.LVL20:
+  38:Core/Src/user_func.c **** 	float tmpFrac = tmpVal - tmpInt1;      // Get fraction (0.0123).
+ 211              		.loc 1 38 2 is_stmt 1 discriminator 4 view .LVU34
+ 212              		.loc 1 38 25 is_stmt 0 discriminator 4 view .LVU35
+ 213 0024 FFF7FEFF 		bl	__aeabi_i2f
+ 214              	.LVL21:
+ 215              		.loc 1 38 25 discriminator 4 view .LVU36
+ 216 0028 011C     		adds	r1, r0, #0
+ 217              		.loc 1 38 8 discriminator 4 view .LVU37
+ 218 002a 201C     		adds	r0, r4, #0
+ 219 002c FFF7FEFF 		bl	__aeabi_fsub
+ 220              	.LVL22:
+  39:Core/Src/user_func.c **** 	int tmpInt2 = trunc(tmpFrac * 1000000);  // Turn into integer (123).
+ 221              		.loc 1 39 2 is_stmt 1 discriminator 4 view .LVU38
+ 222              		.loc 1 39 30 is_stmt 0 discriminator 4 view .LVU39
+ 223 0030 0A49     		ldr	r1, .L22+4
+ 224 0032 FFF7FEFF 		bl	__aeabi_fmul
+ 225              	.LVL23:
+ 226              		.loc 1 39 6 discriminator 4 view .LVU40
+ 227 0036 FFF7FEFF 		bl	__aeabi_f2iz
+ 228              	.LVL24:
+ 229 003a 0300     		movs	r3, r0
+ 230              	.LVL25:
+  40:Core/Src/user_func.c **** 
+  41:Core/Src/user_func.c **** 	// Print as parts, note that you need 0-padding for fractional bit.
+  42:Core/Src/user_func.c **** 	printf ("%s%d.%06d\r\n", tmpSign, tmpInt1, tmpInt2);
+ 231              		.loc 1 42 2 is_stmt 1 discriminator 4 view .LVU41
+ 232 003c 2A00     		movs	r2, r5
+ 233 003e 3100     		movs	r1, r6
+ 234 0040 0748     		ldr	r0, .L22+8
+ 235              	.LVL26:
+ 236              		.loc 1 42 2 is_stmt 0 discriminator 4 view .LVU42
+ 237 0042 FFF7FEFF 		bl	printf
+ 238              	.LVL27:
+  43:Core/Src/user_func.c **** }
+ 239              		.loc 1 43 1 discriminator 4 view .LVU43
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 6
+
+
+ 240              		@ sp needed
+ 241              	.LVL28:
+ 242              	.LVL29:
+ 243              	.LVL30:
+ 244              		.loc 1 43 1 discriminator 4 view .LVU44
+ 245 0046 70BD     		pop	{r4, r5, r6, pc}
+ 246              	.LVL31:
+ 247              	.L20:
+  34:Core/Src/user_func.c **** 	float tmpVal = (num < 0) ? -num : num;
+ 248              		.loc 1 34 34 view .LVU45
+ 249 0048 064E     		ldr	r6, .L22+12
+ 250 004a E1E7     		b	.L12
+ 251              	.LVL32:
+ 252              	.L21:
+  35:Core/Src/user_func.c **** 
+ 253              		.loc 1 35 34 discriminator 1 view .LVU46
+ 254 004c 8023     		movs	r3, #128
+ 255 004e 1B06     		lsls	r3, r3, #24
+ 256 0050 9C46     		mov	ip, r3
+ 257 0052 6444     		add	r4, r4, ip
+ 258              	.LVL33:
+  35:Core/Src/user_func.c **** 
+ 259              		.loc 1 35 34 discriminator 1 view .LVU47
+ 260 0054 E2E7     		b	.L14
+ 261              	.L23:
+ 262 0056 C046     		.align	2
+ 263              	.L22:
+ 264 0058 00000000 		.word	.LC2
+ 265 005c 00247449 		.word	1232348160
+ 266 0060 08000000 		.word	.LC6
+ 267 0064 04000000 		.word	.LC4
+ 268              		.cfi_endproc
+ 269              	.LFE39:
+ 271              		.section	.text.hash,"ax",%progbits
+ 272              		.align	1
+ 273              		.global	hash
+ 274              		.syntax unified
+ 275              		.code	16
+ 276              		.thumb_func
+ 277              		.fpu softvfp
+ 279              	hash:
+ 280              	.LVL34:
+ 281              	.LFB40:
+  44:Core/Src/user_func.c **** 
+  45:Core/Src/user_func.c **** // The hash function is used to translate a string to hash number
+  46:Core/Src/user_func.c **** int hash(char *str)
+  47:Core/Src/user_func.c **** {
+ 282              		.loc 1 47 1 is_stmt 1 view -0
+ 283              		.cfi_startproc
+ 284              		@ args = 0, pretend = 0, frame = 0
+ 285              		@ frame_needed = 0, uses_anonymous_args = 0
+ 286              		@ link register save eliminated.
+ 287              		.loc 1 47 1 is_stmt 0 view .LVU49
+ 288 0000 0300     		movs	r3, r0
+  48:Core/Src/user_func.c ****     unsigned long hash = 0;
+ 289              		.loc 1 48 5 is_stmt 1 view .LVU50
+ 290              	.LVL35:
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 7
+
+
+  49:Core/Src/user_func.c ****     int n; 
+ 291              		.loc 1 49 5 view .LVU51
+  50:Core/Src/user_func.c **** 
+  51:Core/Src/user_func.c ****     while ((n = *str++))
+ 292              		.loc 1 51 5 view .LVU52
+  48:Core/Src/user_func.c ****     int n; 
+ 293              		.loc 1 48 19 is_stmt 0 view .LVU53
+ 294 0002 0020     		movs	r0, #0
+ 295              	.LVL36:
+ 296              	.L25:
+ 297              		.loc 1 51 11 is_stmt 1 view .LVU54
+ 298              		.loc 1 51 21 is_stmt 0 view .LVU55
+ 299 0004 5A1C     		adds	r2, r3, #1
+ 300              	.LVL37:
+ 301              		.loc 1 51 17 view .LVU56
+ 302 0006 1B78     		ldrb	r3, [r3]
+ 303              	.LVL38:
+ 304              		.loc 1 51 11 view .LVU57
+ 305 0008 002B     		cmp	r3, #0
+ 306 000a 03D0     		beq	.L27
+  52:Core/Src/user_func.c **** //        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+  53:Core/Src/user_func.c ****     	  hash = (hash<<8) + n;
+ 307              		.loc 1 53 8 is_stmt 1 view .LVU58
+ 308              		.loc 1 53 20 is_stmt 0 view .LVU59
+ 309 000c 0002     		lsls	r0, r0, #8
+ 310              	.LVL39:
+ 311              		.loc 1 53 13 view .LVU60
+ 312 000e C018     		adds	r0, r0, r3
+ 313              	.LVL40:
+  51:Core/Src/user_func.c **** //        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+ 314              		.loc 1 51 21 view .LVU61
+ 315 0010 1300     		movs	r3, r2
+ 316              	.LVL41:
+  51:Core/Src/user_func.c **** //        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+ 317              		.loc 1 51 21 view .LVU62
+ 318 0012 F7E7     		b	.L25
+ 319              	.LVL42:
+ 320              	.L27:
+  54:Core/Src/user_func.c ****     return hash;
+  55:Core/Src/user_func.c **** }
+ 321              		.loc 1 55 1 view .LVU63
+ 322              		@ sp needed
+ 323 0014 7047     		bx	lr
+ 324              		.cfi_endproc
+ 325              	.LFE40:
+ 327              		.section	.rodata.I2CAddress.str1.4,"aMS",%progbits,1
+ 328              		.align	2
+ 329              	.LC8:
+ 330 0000 696F3200 		.ascii	"io2\000"
+ 331              		.align	2
+ 332              	.LC10:
+ 333 0004 6675656C 		.ascii	"fuel\000"
+ 333      00
+ 334 0009 000000   		.align	2
+ 335              	.LC12:
+ 336 000c 6C656400 		.ascii	"led\000"
+ 337              		.align	2
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 8
+
+
+ 338              	.LC14:
+ 339 0010 62657279 		.ascii	"beryl\000"
+ 339      6C00
+ 340              		.section	.text.I2CAddress,"ax",%progbits
+ 341              		.align	1
+ 342              		.global	I2CAddress
+ 343              		.syntax unified
+ 344              		.code	16
+ 345              		.thumb_func
+ 346              		.fpu softvfp
+ 348              	I2CAddress:
+ 349              	.LVL43:
+ 350              	.LFB41:
+  56:Core/Src/user_func.c **** 
+  57:Core/Src/user_func.c **** uint16_t I2CAddress(char *addr)
+  58:Core/Src/user_func.c **** {
+ 351              		.loc 1 58 1 is_stmt 1 view -0
+ 352              		.cfi_startproc
+ 353              		@ args = 0, pretend = 0, frame = 0
+ 354              		@ frame_needed = 0, uses_anonymous_args = 0
+ 355              		.loc 1 58 1 is_stmt 0 view .LVU65
+ 356 0000 70B5     		push	{r4, r5, r6, lr}
+ 357              	.LCFI4:
+ 358              		.cfi_def_cfa_offset 16
+ 359              		.cfi_offset 4, -16
+ 360              		.cfi_offset 5, -12
+ 361              		.cfi_offset 6, -8
+ 362              		.cfi_offset 14, -4
+ 363 0002 0400     		movs	r4, r0
+  59:Core/Src/user_func.c **** 	uint16_t DevAddress=255; //initialize i2c slave address to 7'b1111111
+ 364              		.loc 1 59 2 is_stmt 1 view .LVU66
+ 365              	.LVL44:
+  60:Core/Src/user_func.c **** 
+  61:Core/Src/user_func.c **** 	if (strcmp(addr, "io2")==0){ 
+ 366              		.loc 1 61 2 view .LVU67
+ 367              		.loc 1 61 6 is_stmt 0 view .LVU68
+ 368 0004 0F49     		ldr	r1, .L37
+ 369 0006 FFF7FEFF 		bl	strcmp
+ 370              	.LVL45:
+ 371              		.loc 1 61 5 view .LVU69
+ 372 000a 0028     		cmp	r0, #0
+ 373 000c 17D0     		beq	.L33
+  59:Core/Src/user_func.c **** 	uint16_t DevAddress=255; //initialize i2c slave address to 7'b1111111
+ 374              		.loc 1 59 11 view .LVU70
+ 375 000e FF25     		movs	r5, #255
+ 376              	.L29:
+ 377              	.LVL46:
+  62:Core/Src/user_func.c **** 		DevAddress=ADDR_PCAIO2;
+  63:Core/Src/user_func.c **** 	}
+  64:Core/Src/user_func.c **** 	if (strcmp(addr, "fuel")==0){ 
+ 378              		.loc 1 64 2 is_stmt 1 view .LVU71
+ 379              		.loc 1 64 6 is_stmt 0 view .LVU72
+ 380 0010 0D49     		ldr	r1, .L37+4
+ 381 0012 2000     		movs	r0, r4
+ 382 0014 FFF7FEFF 		bl	strcmp
+ 383              	.LVL47:
+ 384              		.loc 1 64 5 view .LVU73
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 9
+
+
+ 385 0018 0028     		cmp	r0, #0
+ 386 001a 00D1     		bne	.L30
+  65:Core/Src/user_func.c **** 		DevAddress=ADDR_FUELGAUGE;
+ 387              		.loc 1 65 13 view .LVU74
+ 388 001c 5525     		movs	r5, #85
+ 389              	.LVL48:
+ 390              	.L30:
+  66:Core/Src/user_func.c **** 	}
+  67:Core/Src/user_func.c **** 	if (strcmp(addr, "led")==0){ 
+ 391              		.loc 1 67 2 is_stmt 1 view .LVU75
+ 392              		.loc 1 67 6 is_stmt 0 view .LVU76
+ 393 001e 0B49     		ldr	r1, .L37+8
+ 394 0020 2000     		movs	r0, r4
+ 395 0022 FFF7FEFF 		bl	strcmp
+ 396              	.LVL49:
+ 397              		.loc 1 67 5 view .LVU77
+ 398 0026 0028     		cmp	r0, #0
+ 399 0028 00D1     		bne	.L31
+  68:Core/Src/user_func.c **** 		DevAddress=ADDR_LEDDRIVER;
+ 400              		.loc 1 68 13 view .LVU78
+ 401 002a 4525     		movs	r5, #69
+ 402              	.LVL50:
+ 403              	.L31:
+  69:Core/Src/user_func.c **** 	}
+  70:Core/Src/user_func.c **** 	if (strcmp(addr, "beryl")==0){ 
+ 404              		.loc 1 70 2 is_stmt 1 view .LVU79
+ 405              		.loc 1 70 6 is_stmt 0 view .LVU80
+ 406 002c 0849     		ldr	r1, .L37+12
+ 407 002e 2000     		movs	r0, r4
+ 408 0030 FFF7FEFF 		bl	strcmp
+ 409              	.LVL51:
+ 410              		.loc 1 70 5 view .LVU81
+ 411 0034 0028     		cmp	r0, #0
+ 412 0036 00D1     		bne	.L32
+  71:Core/Src/user_func.c **** 		DevAddress=ADDR_BERYL;
+ 413              		.loc 1 71 13 view .LVU82
+ 414 0038 3C25     		movs	r5, #60
+ 415              	.LVL52:
+ 416              	.L32:
+  72:Core/Src/user_func.c **** 	}
+  73:Core/Src/user_func.c **** 	return (DevAddress<<1); //STM32 needs to shift 1bit for r/w control bit
+ 417              		.loc 1 73 2 is_stmt 1 view .LVU83
+ 418              		.loc 1 73 20 is_stmt 0 view .LVU84
+ 419 003a 6800     		lsls	r0, r5, #1
+  74:Core/Src/user_func.c **** }
+ 420              		.loc 1 74 1 view .LVU85
+ 421              		@ sp needed
+ 422              	.LVL53:
+ 423              	.LVL54:
+ 424              		.loc 1 74 1 view .LVU86
+ 425 003c 70BD     		pop	{r4, r5, r6, pc}
+ 426              	.LVL55:
+ 427              	.L33:
+  62:Core/Src/user_func.c **** 	}
+ 428              		.loc 1 62 13 view .LVU87
+ 429 003e 4325     		movs	r5, #67
+ 430 0040 E6E7     		b	.L29
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 10
+
+
+ 431              	.L38:
+ 432 0042 C046     		.align	2
+ 433              	.L37:
+ 434 0044 00000000 		.word	.LC8
+ 435 0048 04000000 		.word	.LC10
+ 436 004c 0C000000 		.word	.LC12
+ 437 0050 10000000 		.word	.LC14
+ 438              		.cfi_endproc
+ 439              	.LFE41:
+ 441              		.section	.rodata.I2CScan.str1.4,"aMS",%progbits,1
+ 442              		.align	2
+ 443              	.LC16:
+ 444 0000 49324320 		.ascii	"I2C slaves: \000"
+ 444      736C6176 
+ 444      65733A20 
+ 444      00
+ 445 000d 000000   		.align	2
+ 446              	.LC19:
+ 447 0010 257800   		.ascii	"%x\000"
+ 448              		.section	.text.I2CScan,"ax",%progbits
+ 449              		.align	1
+ 450              		.global	I2CScan
+ 451              		.syntax unified
+ 452              		.code	16
+ 453              		.thumb_func
+ 454              		.fpu softvfp
+ 456              	I2CScan:
+ 457              	.LVL56:
+ 458              	.LFB42:
+  75:Core/Src/user_func.c **** 
+  76:Core/Src/user_func.c **** // I2C bus scan from 0x00 to 0x7F
+  77:Core/Src/user_func.c **** void I2CScan(char* DeviceList)
+  78:Core/Src/user_func.c **** {
+ 459              		.loc 1 78 1 is_stmt 1 view -0
+ 460              		.cfi_startproc
+ 461              		@ args = 0, pretend = 0, frame = 8
+ 462              		@ frame_needed = 0, uses_anonymous_args = 0
+ 463              		.loc 1 78 1 is_stmt 0 view .LVU89
+ 464 0000 30B5     		push	{r4, r5, lr}
+ 465              	.LCFI5:
+ 466              		.cfi_def_cfa_offset 12
+ 467              		.cfi_offset 4, -12
+ 468              		.cfi_offset 5, -8
+ 469              		.cfi_offset 14, -4
+ 470 0002 83B0     		sub	sp, sp, #12
+ 471              	.LCFI6:
+ 472              		.cfi_def_cfa_offset 24
+ 473 0004 0500     		movs	r5, r0
+  79:Core/Src/user_func.c **** 	uint16_t I2CAddr = 1;
+ 474              		.loc 1 79 2 is_stmt 1 view .LVU90
+ 475              	.LVL57:
+  80:Core/Src/user_func.c **** 	HAL_StatusTypeDef I2C_Status;
+ 476              		.loc 1 80 2 view .LVU91
+  81:Core/Src/user_func.c **** 	char i2c_addr[5]; 
+ 477              		.loc 1 81 2 view .LVU92
+  82:Core/Src/user_func.c **** 
+  83:Core/Src/user_func.c **** 	sprintf(DeviceList,"I2C slaves: ");
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 11
+
+
+ 478              		.loc 1 83 2 view .LVU93
+ 479 0006 0D22     		movs	r2, #13
+ 480 0008 0E49     		ldr	r1, .L45
+ 481 000a FFF7FEFF 		bl	memcpy
+ 482              	.LVL58:
+  84:Core/Src/user_func.c **** 
+  85:Core/Src/user_func.c **** 	while(I2CAddr<=0x7F) //Scan I2C address from 0x01 to 0x7F
+ 483              		.loc 1 85 2 view .LVU94
+  79:Core/Src/user_func.c **** 	HAL_StatusTypeDef I2C_Status;
+ 484              		.loc 1 79 11 is_stmt 0 view .LVU95
+ 485 000e 0124     		movs	r4, #1
+ 486              		.loc 1 85 7 view .LVU96
+ 487 0010 0AE0     		b	.L40
+ 488              	.LVL59:
+ 489              	.L44:
+  86:Core/Src/user_func.c **** 	{
+  87:Core/Src/user_func.c **** 		I2C_Status=HAL_I2C_IsDeviceReady(&hi2c1, I2CAddr, 2, 1000);
+  88:Core/Src/user_func.c **** 		if (I2C_Status!=0x03) 
+  89:Core/Src/user_func.c **** 		{
+  90:Core/Src/user_func.c **** 			sprintf(i2c_addr, "%x", I2CAddr);
+ 490              		.loc 1 90 4 is_stmt 1 view .LVU97
+ 491 0012 2200     		movs	r2, r4
+ 492 0014 0C49     		ldr	r1, .L45+4
+ 493 0016 6846     		mov	r0, sp
+ 494              	.LVL60:
+ 495              		.loc 1 90 4 is_stmt 0 view .LVU98
+ 496 0018 FFF7FEFF 		bl	sprintf
+ 497              	.LVL61:
+  91:Core/Src/user_func.c **** 			strcat(DeviceList, i2c_addr);
+ 498              		.loc 1 91 4 is_stmt 1 view .LVU99
+ 499 001c 6946     		mov	r1, sp
+ 500 001e 2800     		movs	r0, r5
+ 501 0020 FFF7FEFF 		bl	strcat
+ 502              	.LVL62:
+ 503              	.L41:
+  92:Core/Src/user_func.c **** 		}
+  93:Core/Src/user_func.c **** 		I2CAddr++;
+ 504              		.loc 1 93 3 view .LVU100
+ 505              		.loc 1 93 10 is_stmt 0 view .LVU101
+ 506 0024 0134     		adds	r4, r4, #1
+ 507              	.LVL63:
+ 508              		.loc 1 93 10 view .LVU102
+ 509 0026 A4B2     		uxth	r4, r4
+ 510              	.LVL64:
+ 511              	.L40:
+  85:Core/Src/user_func.c **** 	{
+ 512              		.loc 1 85 7 is_stmt 1 view .LVU103
+ 513 0028 7F2C     		cmp	r4, #127
+ 514 002a 09D8     		bhi	.L43
+  87:Core/Src/user_func.c **** 		if (I2C_Status!=0x03) 
+ 515              		.loc 1 87 3 view .LVU104
+  87:Core/Src/user_func.c **** 		if (I2C_Status!=0x03) 
+ 516              		.loc 1 87 14 is_stmt 0 view .LVU105
+ 517 002c FA23     		movs	r3, #250
+ 518 002e 9B00     		lsls	r3, r3, #2
+ 519 0030 0222     		movs	r2, #2
+ 520 0032 2100     		movs	r1, r4
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 12
+
+
+ 521 0034 0548     		ldr	r0, .L45+8
+ 522 0036 FFF7FEFF 		bl	HAL_I2C_IsDeviceReady
+ 523              	.LVL65:
+  88:Core/Src/user_func.c **** 		{
+ 524              		.loc 1 88 3 is_stmt 1 view .LVU106
+  88:Core/Src/user_func.c **** 		{
+ 525              		.loc 1 88 6 is_stmt 0 view .LVU107
+ 526 003a 0328     		cmp	r0, #3
+ 527 003c F2D0     		beq	.L41
+ 528 003e E8E7     		b	.L44
+ 529              	.LVL66:
+ 530              	.L43:
+  94:Core/Src/user_func.c **** 	}
+  95:Core/Src/user_func.c **** }
+ 531              		.loc 1 95 1 view .LVU108
+ 532 0040 03B0     		add	sp, sp, #12
+ 533              		@ sp needed
+ 534              	.LVL67:
+ 535              	.LVL68:
+ 536              		.loc 1 95 1 view .LVU109
+ 537 0042 30BD     		pop	{r4, r5, pc}
+ 538              	.L46:
+ 539              		.align	2
+ 540              	.L45:
+ 541 0044 00000000 		.word	.LC16
+ 542 0048 10000000 		.word	.LC19
+ 543 004c 00000000 		.word	hi2c1
+ 544              		.cfi_endproc
+ 545              	.LFE42:
+ 547              		.section	.text.CheckI2CStatus,"ax",%progbits
+ 548              		.align	1
+ 549              		.global	CheckI2CStatus
+ 550              		.syntax unified
+ 551              		.code	16
+ 552              		.thumb_func
+ 553              		.fpu softvfp
+ 555              	CheckI2CStatus:
+ 556              	.LVL69:
+ 557              	.LFB43:
+  96:Core/Src/user_func.c **** 
+  97:Core/Src/user_func.c **** HAL_StatusTypeDef CheckI2CStatus(char *addr)
+  98:Core/Src/user_func.c **** {
+ 558              		.loc 1 98 1 is_stmt 1 view -0
+ 559              		.cfi_startproc
+ 560              		@ args = 0, pretend = 0, frame = 0
+ 561              		@ frame_needed = 0, uses_anonymous_args = 0
+ 562              		.loc 1 98 1 is_stmt 0 view .LVU111
+ 563 0000 10B5     		push	{r4, lr}
+ 564              	.LCFI7:
+ 565              		.cfi_def_cfa_offset 8
+ 566              		.cfi_offset 4, -8
+ 567              		.cfi_offset 14, -4
+  99:Core/Src/user_func.c **** 	HAL_StatusTypeDef I2C_Status=HAL_OK;
+ 568              		.loc 1 99 2 is_stmt 1 view .LVU112
+ 569              	.LVL70:
+ 100:Core/Src/user_func.c **** 	uint16_t DevAddress;
+ 570              		.loc 1 100 2 view .LVU113
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 13
+
+
+ 101:Core/Src/user_func.c **** 
+ 102:Core/Src/user_func.c **** 	DevAddress=I2CAddress(addr);
+ 571              		.loc 1 102 2 view .LVU114
+ 572              		.loc 1 102 13 is_stmt 0 view .LVU115
+ 573 0002 FFF7FEFF 		bl	I2CAddress
+ 574              	.LVL71:
+ 575              		.loc 1 102 13 view .LVU116
+ 576 0006 0100     		movs	r1, r0
+ 577              	.LVL72:
+ 103:Core/Src/user_func.c **** 
+ 104:Core/Src/user_func.c **** 	I2C_Status=HAL_I2C_IsDeviceReady(&hi2c1, DevAddress, 2, 1000);
+ 578              		.loc 1 104 2 is_stmt 1 view .LVU117
+ 579              		.loc 1 104 13 is_stmt 0 view .LVU118
+ 580 0008 FA23     		movs	r3, #250
+ 581 000a 9B00     		lsls	r3, r3, #2
+ 582 000c 0222     		movs	r2, #2
+ 583 000e 0248     		ldr	r0, .L48
+ 584 0010 FFF7FEFF 		bl	HAL_I2C_IsDeviceReady
+ 585              	.LVL73:
+ 105:Core/Src/user_func.c **** 	return I2C_Status;
+ 586              		.loc 1 105 2 is_stmt 1 view .LVU119
+ 106:Core/Src/user_func.c **** }
+ 587              		.loc 1 106 1 is_stmt 0 view .LVU120
+ 588              		@ sp needed
+ 589 0014 10BD     		pop	{r4, pc}
+ 590              	.L49:
+ 591 0016 C046     		.align	2
+ 592              	.L48:
+ 593 0018 00000000 		.word	hi2c1
+ 594              		.cfi_endproc
+ 595              	.LFE43:
+ 597              		.section	.text.I2CRead,"ax",%progbits
+ 598              		.align	1
+ 599              		.global	I2CRead
+ 600              		.syntax unified
+ 601              		.code	16
+ 602              		.thumb_func
+ 603              		.fpu softvfp
+ 605              	I2CRead:
+ 606              	.LVL74:
+ 607              	.LFB44:
+ 107:Core/Src/user_func.c **** 
+ 108:Core/Src/user_func.c **** HAL_StatusTypeDef I2CRead(char *addr, uint8_t *pData, uint16_t Size)
+ 109:Core/Src/user_func.c **** {
+ 608              		.loc 1 109 1 is_stmt 1 view -0
+ 609              		.cfi_startproc
+ 610              		@ args = 0, pretend = 0, frame = 0
+ 611              		@ frame_needed = 0, uses_anonymous_args = 0
+ 612              		.loc 1 109 1 is_stmt 0 view .LVU122
+ 613 0000 30B5     		push	{r4, r5, lr}
+ 614              	.LCFI8:
+ 615              		.cfi_def_cfa_offset 12
+ 616              		.cfi_offset 4, -12
+ 617              		.cfi_offset 5, -8
+ 618              		.cfi_offset 14, -4
+ 619 0002 83B0     		sub	sp, sp, #12
+ 620              	.LCFI9:
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 14
+
+
+ 621              		.cfi_def_cfa_offset 24
+ 622 0004 0C00     		movs	r4, r1
+ 623 0006 1500     		movs	r5, r2
+ 110:Core/Src/user_func.c **** 	HAL_StatusTypeDef I2C_Status=HAL_OK;
+ 624              		.loc 1 110 2 is_stmt 1 view .LVU123
+ 625              	.LVL75:
+ 111:Core/Src/user_func.c **** 	uint16_t DevAddress;
+ 626              		.loc 1 111 2 view .LVU124
+ 112:Core/Src/user_func.c **** 
+ 113:Core/Src/user_func.c **** 	DevAddress=I2CAddress(addr);
+ 627              		.loc 1 113 2 view .LVU125
+ 628              		.loc 1 113 13 is_stmt 0 view .LVU126
+ 629 0008 FFF7FEFF 		bl	I2CAddress
+ 630              	.LVL76:
+ 631              		.loc 1 113 13 view .LVU127
+ 632 000c 0100     		movs	r1, r0
+ 633              	.LVL77:
+ 114:Core/Src/user_func.c **** 
+ 115:Core/Src/user_func.c **** 	I2C_Status=HAL_I2C_Master_Receive(&hi2c1, DevAddress, pData, Size, 2);
+ 634              		.loc 1 115 2 is_stmt 1 view .LVU128
+ 635              		.loc 1 115 13 is_stmt 0 view .LVU129
+ 636 000e 0223     		movs	r3, #2
+ 637 0010 0093     		str	r3, [sp]
+ 638 0012 2B00     		movs	r3, r5
+ 639 0014 2200     		movs	r2, r4
+ 640 0016 0248     		ldr	r0, .L51
+ 641 0018 FFF7FEFF 		bl	HAL_I2C_Master_Receive
+ 642              	.LVL78:
+ 116:Core/Src/user_func.c **** 	return I2C_Status;
+ 643              		.loc 1 116 2 is_stmt 1 view .LVU130
+ 117:Core/Src/user_func.c **** }
+ 644              		.loc 1 117 1 is_stmt 0 view .LVU131
+ 645 001c 03B0     		add	sp, sp, #12
+ 646              		@ sp needed
+ 647              	.LVL79:
+ 648              		.loc 1 117 1 view .LVU132
+ 649 001e 30BD     		pop	{r4, r5, pc}
+ 650              	.L52:
+ 651              		.align	2
+ 652              	.L51:
+ 653 0020 00000000 		.word	hi2c1
+ 654              		.cfi_endproc
+ 655              	.LFE44:
+ 657              		.section	.text.I2CReadReg,"ax",%progbits
+ 658              		.align	1
+ 659              		.global	I2CReadReg
+ 660              		.syntax unified
+ 661              		.code	16
+ 662              		.thumb_func
+ 663              		.fpu softvfp
+ 665              	I2CReadReg:
+ 666              	.LVL80:
+ 667              	.LFB45:
+ 118:Core/Src/user_func.c **** 
+ 119:Core/Src/user_func.c **** HAL_StatusTypeDef I2CReadReg(char *addr, uint16_t RegAdd, uint16_t RegSize, uint8_t *pData, uint16_
+ 120:Core/Src/user_func.c **** {
+ 668              		.loc 1 120 1 is_stmt 1 view -0
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 15
+
+
+ 669              		.cfi_startproc
+ 670              		@ args = 4, pretend = 0, frame = 0
+ 671              		@ frame_needed = 0, uses_anonymous_args = 0
+ 672              		.loc 1 120 1 is_stmt 0 view .LVU134
+ 673 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 674              	.LCFI10:
+ 675              		.cfi_def_cfa_offset 20
+ 676              		.cfi_offset 4, -20
+ 677              		.cfi_offset 5, -16
+ 678              		.cfi_offset 6, -12
+ 679              		.cfi_offset 7, -8
+ 680              		.cfi_offset 14, -4
+ 681 0002 85B0     		sub	sp, sp, #20
+ 682              	.LCFI11:
+ 683              		.cfi_def_cfa_offset 40
+ 684 0004 0D00     		movs	r5, r1
+ 685 0006 1400     		movs	r4, r2
+ 686 0008 1E00     		movs	r6, r3
+ 687 000a 0AAB     		add	r3, sp, #40
+ 688              	.LVL81:
+ 689              		.loc 1 120 1 view .LVU135
+ 690 000c 1F88     		ldrh	r7, [r3]
+ 121:Core/Src/user_func.c **** 	HAL_StatusTypeDef I2C_Status=HAL_OK;
+ 691              		.loc 1 121 2 is_stmt 1 view .LVU136
+ 692              	.LVL82:
+ 122:Core/Src/user_func.c **** 	uint16_t DevAddress;
+ 693              		.loc 1 122 2 view .LVU137
+ 123:Core/Src/user_func.c **** 
+ 124:Core/Src/user_func.c **** 	if(RegSize==8){RegSize=I2C_MEMADD_SIZE_8BIT;}
+ 694              		.loc 1 124 2 view .LVU138
+ 695              		.loc 1 124 4 is_stmt 0 view .LVU139
+ 696 000e 082A     		cmp	r2, #8
+ 697 0010 0FD0     		beq	.L55
+ 125:Core/Src/user_func.c **** 	if(RegSize==16){RegSize=I2C_MEMADD_SIZE_16BIT;}
+ 698              		.loc 1 125 2 is_stmt 1 view .LVU140
+ 699              		.loc 1 125 4 is_stmt 0 view .LVU141
+ 700 0012 102A     		cmp	r2, #16
+ 701 0014 0FD0     		beq	.L57
+ 702              	.L54:
+ 703              	.LVL83:
+ 126:Core/Src/user_func.c **** 
+ 127:Core/Src/user_func.c **** 	DevAddress=I2CAddress(addr);
+ 704              		.loc 1 127 2 is_stmt 1 view .LVU142
+ 705              		.loc 1 127 13 is_stmt 0 view .LVU143
+ 706 0016 FFF7FEFF 		bl	I2CAddress
+ 707              	.LVL84:
+ 708              		.loc 1 127 13 view .LVU144
+ 709 001a 0100     		movs	r1, r0
+ 710              	.LVL85:
+ 128:Core/Src/user_func.c **** 
+ 129:Core/Src/user_func.c **** 	I2C_Status=HAL_I2C_Mem_Read(&hi2c1, DevAddress, RegAdd, RegSize, pData, Size, 2);
+ 711              		.loc 1 129 2 is_stmt 1 view .LVU145
+ 712              		.loc 1 129 13 is_stmt 0 view .LVU146
+ 713 001c 0223     		movs	r3, #2
+ 714 001e 0293     		str	r3, [sp, #8]
+ 715 0020 0197     		str	r7, [sp, #4]
+ 716 0022 0096     		str	r6, [sp]
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 16
+
+
+ 717 0024 2300     		movs	r3, r4
+ 718 0026 2A00     		movs	r2, r5
+ 719 0028 0448     		ldr	r0, .L58
+ 720 002a FFF7FEFF 		bl	HAL_I2C_Mem_Read
+ 721              	.LVL86:
+ 130:Core/Src/user_func.c **** 	return I2C_Status;
+ 722              		.loc 1 130 2 is_stmt 1 view .LVU147
+ 131:Core/Src/user_func.c **** }
+ 723              		.loc 1 131 1 is_stmt 0 view .LVU148
+ 724 002e 05B0     		add	sp, sp, #20
+ 725              		@ sp needed
+ 726              	.LVL87:
+ 727              	.LVL88:
+ 728              		.loc 1 131 1 view .LVU149
+ 729 0030 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 730              	.LVL89:
+ 731              	.L55:
+ 124:Core/Src/user_func.c **** 	if(RegSize==16){RegSize=I2C_MEMADD_SIZE_16BIT;}
+ 732              		.loc 1 124 24 view .LVU150
+ 733 0032 0124     		movs	r4, #1
+ 734 0034 EFE7     		b	.L54
+ 735              	.L57:
+ 125:Core/Src/user_func.c **** 
+ 736              		.loc 1 125 25 view .LVU151
+ 737 0036 0224     		movs	r4, #2
+ 738 0038 EDE7     		b	.L54
+ 739              	.L59:
+ 740 003a C046     		.align	2
+ 741              	.L58:
+ 742 003c 00000000 		.word	hi2c1
+ 743              		.cfi_endproc
+ 744              	.LFE45:
+ 746              		.section	.text.I2CWrite,"ax",%progbits
+ 747              		.align	1
+ 748              		.global	I2CWrite
+ 749              		.syntax unified
+ 750              		.code	16
+ 751              		.thumb_func
+ 752              		.fpu softvfp
+ 754              	I2CWrite:
+ 755              	.LVL90:
+ 756              	.LFB46:
+ 132:Core/Src/user_func.c **** 
+ 133:Core/Src/user_func.c **** HAL_StatusTypeDef I2CWrite(char *addr, uint8_t *pData, uint16_t Size)
+ 134:Core/Src/user_func.c **** {
+ 757              		.loc 1 134 1 is_stmt 1 view -0
+ 758              		.cfi_startproc
+ 759              		@ args = 0, pretend = 0, frame = 0
+ 760              		@ frame_needed = 0, uses_anonymous_args = 0
+ 761              		.loc 1 134 1 is_stmt 0 view .LVU153
+ 762 0000 30B5     		push	{r4, r5, lr}
+ 763              	.LCFI12:
+ 764              		.cfi_def_cfa_offset 12
+ 765              		.cfi_offset 4, -12
+ 766              		.cfi_offset 5, -8
+ 767              		.cfi_offset 14, -4
+ 768 0002 83B0     		sub	sp, sp, #12
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 17
+
+
+ 769              	.LCFI13:
+ 770              		.cfi_def_cfa_offset 24
+ 771 0004 0C00     		movs	r4, r1
+ 772 0006 1500     		movs	r5, r2
+ 135:Core/Src/user_func.c **** 	HAL_StatusTypeDef I2C_Status=HAL_OK;
+ 773              		.loc 1 135 2 is_stmt 1 view .LVU154
+ 774              	.LVL91:
+ 136:Core/Src/user_func.c **** 	uint16_t DevAddress;
+ 775              		.loc 1 136 2 view .LVU155
+ 137:Core/Src/user_func.c **** 
+ 138:Core/Src/user_func.c **** 	DevAddress=I2CAddress(addr);
+ 776              		.loc 1 138 2 view .LVU156
+ 777              		.loc 1 138 13 is_stmt 0 view .LVU157
+ 778 0008 FFF7FEFF 		bl	I2CAddress
+ 779              	.LVL92:
+ 780              		.loc 1 138 13 view .LVU158
+ 781 000c 0100     		movs	r1, r0
+ 782              	.LVL93:
+ 139:Core/Src/user_func.c **** 
+ 140:Core/Src/user_func.c **** 	I2C_Status=HAL_I2C_Master_Transmit(&hi2c1, DevAddress, pData, Size, 2);
+ 783              		.loc 1 140 2 is_stmt 1 view .LVU159
+ 784              		.loc 1 140 13 is_stmt 0 view .LVU160
+ 785 000e 0223     		movs	r3, #2
+ 786 0010 0093     		str	r3, [sp]
+ 787 0012 2B00     		movs	r3, r5
+ 788 0014 2200     		movs	r2, r4
+ 789 0016 0248     		ldr	r0, .L61
+ 790 0018 FFF7FEFF 		bl	HAL_I2C_Master_Transmit
+ 791              	.LVL94:
+ 141:Core/Src/user_func.c **** 	return I2C_Status;
+ 792              		.loc 1 141 2 is_stmt 1 view .LVU161
+ 142:Core/Src/user_func.c **** }
+ 793              		.loc 1 142 1 is_stmt 0 view .LVU162
+ 794 001c 03B0     		add	sp, sp, #12
+ 795              		@ sp needed
+ 796              	.LVL95:
+ 797              		.loc 1 142 1 view .LVU163
+ 798 001e 30BD     		pop	{r4, r5, pc}
+ 799              	.L62:
+ 800              		.align	2
+ 801              	.L61:
+ 802 0020 00000000 		.word	hi2c1
+ 803              		.cfi_endproc
+ 804              	.LFE46:
+ 806              		.section	.text.I2CWriteReg,"ax",%progbits
+ 807              		.align	1
+ 808              		.global	I2CWriteReg
+ 809              		.syntax unified
+ 810              		.code	16
+ 811              		.thumb_func
+ 812              		.fpu softvfp
+ 814              	I2CWriteReg:
+ 815              	.LVL96:
+ 816              	.LFB47:
+ 143:Core/Src/user_func.c **** 
+ 144:Core/Src/user_func.c **** HAL_StatusTypeDef I2CWriteReg(char *addr, uint16_t RegAdd, uint16_t RegSize, uint8_t *pData, uint16
+ 145:Core/Src/user_func.c **** {
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 18
+
+
+ 817              		.loc 1 145 1 is_stmt 1 view -0
+ 818              		.cfi_startproc
+ 819              		@ args = 4, pretend = 0, frame = 0
+ 820              		@ frame_needed = 0, uses_anonymous_args = 0
+ 821              		.loc 1 145 1 is_stmt 0 view .LVU165
+ 822 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 823              	.LCFI14:
+ 824              		.cfi_def_cfa_offset 20
+ 825              		.cfi_offset 4, -20
+ 826              		.cfi_offset 5, -16
+ 827              		.cfi_offset 6, -12
+ 828              		.cfi_offset 7, -8
+ 829              		.cfi_offset 14, -4
+ 830 0002 85B0     		sub	sp, sp, #20
+ 831              	.LCFI15:
+ 832              		.cfi_def_cfa_offset 40
+ 833 0004 0D00     		movs	r5, r1
+ 834 0006 1400     		movs	r4, r2
+ 835 0008 1E00     		movs	r6, r3
+ 836 000a 0AAB     		add	r3, sp, #40
+ 837              	.LVL97:
+ 838              		.loc 1 145 1 view .LVU166
+ 839 000c 1F88     		ldrh	r7, [r3]
+ 146:Core/Src/user_func.c **** 	HAL_StatusTypeDef I2C_Status=HAL_OK;
+ 840              		.loc 1 146 2 is_stmt 1 view .LVU167
+ 841              	.LVL98:
+ 147:Core/Src/user_func.c **** 	uint16_t DevAddress;
+ 842              		.loc 1 147 2 view .LVU168
+ 148:Core/Src/user_func.c **** 
+ 149:Core/Src/user_func.c **** 	if(RegSize==8){RegSize=I2C_MEMADD_SIZE_8BIT;}
+ 843              		.loc 1 149 2 view .LVU169
+ 844              		.loc 1 149 4 is_stmt 0 view .LVU170
+ 845 000e 082A     		cmp	r2, #8
+ 846 0010 0FD0     		beq	.L65
+ 150:Core/Src/user_func.c **** 	if(RegSize==16){RegSize=I2C_MEMADD_SIZE_16BIT;}
+ 847              		.loc 1 150 2 is_stmt 1 view .LVU171
+ 848              		.loc 1 150 4 is_stmt 0 view .LVU172
+ 849 0012 102A     		cmp	r2, #16
+ 850 0014 0FD0     		beq	.L67
+ 851              	.L64:
+ 852              	.LVL99:
+ 151:Core/Src/user_func.c **** 
+ 152:Core/Src/user_func.c **** 	DevAddress=I2CAddress(addr);
+ 853              		.loc 1 152 2 is_stmt 1 view .LVU173
+ 854              		.loc 1 152 13 is_stmt 0 view .LVU174
+ 855 0016 FFF7FEFF 		bl	I2CAddress
+ 856              	.LVL100:
+ 857              		.loc 1 152 13 view .LVU175
+ 858 001a 0100     		movs	r1, r0
+ 859              	.LVL101:
+ 153:Core/Src/user_func.c **** 
+ 154:Core/Src/user_func.c **** 	I2C_Status=HAL_I2C_Mem_Write(&hi2c1, DevAddress, RegAdd, RegSize, pData, Size, 2);
+ 860              		.loc 1 154 2 is_stmt 1 view .LVU176
+ 861              		.loc 1 154 13 is_stmt 0 view .LVU177
+ 862 001c 0223     		movs	r3, #2
+ 863 001e 0293     		str	r3, [sp, #8]
+ 864 0020 0197     		str	r7, [sp, #4]
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 19
+
+
+ 865 0022 0096     		str	r6, [sp]
+ 866 0024 2300     		movs	r3, r4
+ 867 0026 2A00     		movs	r2, r5
+ 868 0028 0448     		ldr	r0, .L68
+ 869 002a FFF7FEFF 		bl	HAL_I2C_Mem_Write
+ 870              	.LVL102:
+ 155:Core/Src/user_func.c **** 	return I2C_Status;
+ 871              		.loc 1 155 2 is_stmt 1 view .LVU178
+ 156:Core/Src/user_func.c **** }
+ 872              		.loc 1 156 1 is_stmt 0 view .LVU179
+ 873 002e 05B0     		add	sp, sp, #20
+ 874              		@ sp needed
+ 875              	.LVL103:
+ 876              	.LVL104:
+ 877              		.loc 1 156 1 view .LVU180
+ 878 0030 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 879              	.LVL105:
+ 880              	.L65:
+ 149:Core/Src/user_func.c **** 	if(RegSize==16){RegSize=I2C_MEMADD_SIZE_16BIT;}
+ 881              		.loc 1 149 24 view .LVU181
+ 882 0032 0124     		movs	r4, #1
+ 883 0034 EFE7     		b	.L64
+ 884              	.L67:
+ 150:Core/Src/user_func.c **** 
+ 885              		.loc 1 150 25 view .LVU182
+ 886 0036 0224     		movs	r4, #2
+ 887 0038 EDE7     		b	.L64
+ 888              	.L69:
+ 889 003a C046     		.align	2
+ 890              	.L68:
+ 891 003c 00000000 		.word	hi2c1
+ 892              		.cfi_endproc
+ 893              	.LFE47:
+ 895              		.section	.text.mr32,"ax",%progbits
+ 896              		.align	1
+ 897              		.global	mr32
+ 898              		.syntax unified
+ 899              		.code	16
+ 900              		.thumb_func
+ 901              		.fpu softvfp
+ 903              	mr32:
+ 904              	.LVL106:
+ 905              	.LFB48:
+ 157:Core/Src/user_func.c **** 
+ 158:Core/Src/user_func.c **** uint32_t mr32(uint32_t address)
+ 159:Core/Src/user_func.c **** {
+ 906              		.loc 1 159 1 is_stmt 1 view -0
+ 907              		.cfi_startproc
+ 908              		@ args = 0, pretend = 0, frame = 0
+ 909              		@ frame_needed = 0, uses_anonymous_args = 0
+ 910              		@ link register save eliminated.
+ 160:Core/Src/user_func.c **** 	ADDR = (uint32_t *) address;
+ 911              		.loc 1 160 2 view .LVU184
+ 912              		.loc 1 160 7 is_stmt 0 view .LVU185
+ 913 0000 014B     		ldr	r3, .L71
+ 914 0002 1860     		str	r0, [r3]
+ 161:Core/Src/user_func.c **** 	return *ADDR;
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 20
+
+
+ 915              		.loc 1 161 2 is_stmt 1 view .LVU186
+ 916              		.loc 1 161 9 is_stmt 0 view .LVU187
+ 917 0004 0068     		ldr	r0, [r0]
+ 918              	.LVL107:
+ 162:Core/Src/user_func.c **** }
+ 919              		.loc 1 162 1 view .LVU188
+ 920              		@ sp needed
+ 921 0006 7047     		bx	lr
+ 922              	.L72:
+ 923              		.align	2
+ 924              	.L71:
+ 925 0008 00000000 		.word	ADDR
+ 926              		.cfi_endproc
+ 927              	.LFE48:
+ 929              		.section	.text.mw32,"ax",%progbits
+ 930              		.align	1
+ 931              		.global	mw32
+ 932              		.syntax unified
+ 933              		.code	16
+ 934              		.thumb_func
+ 935              		.fpu softvfp
+ 937              	mw32:
+ 938              	.LVL108:
+ 939              	.LFB49:
+ 163:Core/Src/user_func.c **** 
+ 164:Core/Src/user_func.c **** void mw32(uint32_t address, uint32_t data)
+ 165:Core/Src/user_func.c **** {
+ 940              		.loc 1 165 1 is_stmt 1 view -0
+ 941              		.cfi_startproc
+ 942              		@ args = 0, pretend = 0, frame = 0
+ 943              		@ frame_needed = 0, uses_anonymous_args = 0
+ 944              		@ link register save eliminated.
+ 166:Core/Src/user_func.c **** 	ADDR = (uint32_t *) address; // Change the data type of address to pointer -- use address of the p
+ 945              		.loc 1 166 2 view .LVU190
+ 946              		.loc 1 166 7 is_stmt 0 view .LVU191
+ 947 0000 014B     		ldr	r3, .L74
+ 948 0002 1860     		str	r0, [r3]
+ 167:Core/Src/user_func.c **** 	*ADDR = data;  // assign the data to the address
+ 949              		.loc 1 167 2 is_stmt 1 view .LVU192
+ 950              		.loc 1 167 8 is_stmt 0 view .LVU193
+ 951 0004 0160     		str	r1, [r0]
+ 168:Core/Src/user_func.c **** }...
+ 952              		.loc 1 168 1 view .LVU194
+ 953              		@ sp needed
+ 954 0006 7047     		bx	lr
+ 955              	.L75:
+ 956              		.align	2
+ 957              	.L74:
+ 958 0008 00000000 		.word	ADDR
+ 959              		.cfi_endproc
+ 960              	.LFE49:
+ 962              		.text
+ 963              	.Letext0:
+ 964              		.file 2 "/Users/yanli/arm/arm-none-eabi/include/machine/_default_types.h"
+ 965              		.file 3 "/Users/yanli/arm/arm-none-eabi/include/sys/lock.h"
+ 966              		.file 4 "/Users/yanli/arm/arm-none-eabi/include/sys/_types.h"
+ 967              		.file 5 "/Users/yanli/arm/lib/gcc/arm-none-eabi/9.2.1/include/stddef.h"
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 21
+
+
+ 968              		.file 6 "/Users/yanli/arm/arm-none-eabi/include/sys/reent.h"
+ 969              		.file 7 "/Users/yanli/arm/arm-none-eabi/include/sys/_stdint.h"
+ 970              		.file 8 "/Users/yanli/arm/arm-none-eabi/include/sys/errno.h"
+ 971              		.file 9 "/Users/yanli/arm/arm-none-eabi/include/math.h"
+ 972              		.file 10 "/Users/yanli/arm/arm-none-eabi/include/sys/unistd.h"
+ 973              		.file 11 "Drivers/CMSIS/Device/ST/STM32L0xx/Include/system_stm32l0xx.h"
+ 974              		.file 12 "Drivers/CMSIS/Device/ST/STM32L0xx/Include/stm32l073xx.h"
+ 975              		.file 13 "Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_def.h"
+ 976              		.file 14 "Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_dma.h"
+ 977              		.file 15 "Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_i2c.h"
+ 978              		.file 16 "Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_uart.h"
+ 979              		.file 17 "Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal.h"
+ 980              		.file 18 "Core/Inc/user_func.h"
+ 981              		.file 19 "/Users/yanli/arm/arm-none-eabi/include/stdio.h"
+ 982              		.file 20 "/Users/yanli/arm/arm-none-eabi/include/string.h"
+ 983              		.file 21 "<built-in>"
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 22
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 user_func.c
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:16     .text.__io_putchar:0000000000000000 $t
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:24     .text.__io_putchar:0000000000000000 __io_putchar
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:59     .text.__io_putchar:0000000000000018 $d
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:65     .text._write:0000000000000000 $t
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:72     .text._write:0000000000000000 _write
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:140    .text._write:0000000000000030 $d
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:145    .rodata.printfloat.str1.4:0000000000000000 $d
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:160    .text.printfloat:0000000000000000 $t
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:167    .text.printfloat:0000000000000000 printfloat
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:264    .text.printfloat:0000000000000058 $d
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:272    .text.hash:0000000000000000 $t
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:279    .text.hash:0000000000000000 hash
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:328    .rodata.I2CAddress.str1.4:0000000000000000 $d
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:341    .text.I2CAddress:0000000000000000 $t
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:348    .text.I2CAddress:0000000000000000 I2CAddress
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:434    .text.I2CAddress:0000000000000044 $d
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:442    .rodata.I2CScan.str1.4:0000000000000000 $d
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:449    .text.I2CScan:0000000000000000 $t
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:456    .text.I2CScan:0000000000000000 I2CScan
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:541    .text.I2CScan:0000000000000044 $d
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:548    .text.CheckI2CStatus:0000000000000000 $t
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:555    .text.CheckI2CStatus:0000000000000000 CheckI2CStatus
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:593    .text.CheckI2CStatus:0000000000000018 $d
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:598    .text.I2CRead:0000000000000000 $t
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:605    .text.I2CRead:0000000000000000 I2CRead
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:653    .text.I2CRead:0000000000000020 $d
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:658    .text.I2CReadReg:0000000000000000 $t
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:665    .text.I2CReadReg:0000000000000000 I2CReadReg
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:742    .text.I2CReadReg:000000000000003c $d
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:747    .text.I2CWrite:0000000000000000 $t
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:754    .text.I2CWrite:0000000000000000 I2CWrite
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:802    .text.I2CWrite:0000000000000020 $d
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:807    .text.I2CWriteReg:0000000000000000 $t
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:814    .text.I2CWriteReg:0000000000000000 I2CWriteReg
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:891    .text.I2CWriteReg:000000000000003c $d
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:896    .text.mr32:0000000000000000 $t
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:903    .text.mr32:0000000000000000 mr32
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:925    .text.mr32:0000000000000008 $d
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:930    .text.mw32:0000000000000000 $t
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:937    .text.mw32:0000000000000000 mw32
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s:958    .text.mw32:0000000000000008 $d
+
+UNDEFINED SYMBOLS
+HAL_UART_Transmit
+testUartHandle
+__errno
+__aeabi_fcmplt
+__aeabi_f2iz
+__aeabi_i2f
+__aeabi_fsub
+__aeabi_fmul
+printf
+strcmp
+memcpy
+sprintf
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccFvCM82.s 			page 23
+
+
+strcat
+HAL_I2C_IsDeviceReady
+hi2c1
+HAL_I2C_Master_Receive
+HAL_I2C_Mem_Read
+HAL_I2C_Master_Transmit
+HAL_I2C_Mem_Write
+ADDR

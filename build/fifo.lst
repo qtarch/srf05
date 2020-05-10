@@ -1,0 +1,1237 @@
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 1
+
+
+   1              		.cpu cortex-m0plus
+   2              		.eabi_attribute 20, 1
+   3              		.eabi_attribute 21, 1
+   4              		.eabi_attribute 23, 3
+   5              		.eabi_attribute 24, 1
+   6              		.eabi_attribute 25, 1
+   7              		.eabi_attribute 26, 1
+   8              		.eabi_attribute 30, 1
+   9              		.eabi_attribute 34, 0
+  10              		.eabi_attribute 18, 4
+  11              		.file	"fifo.c"
+  12              		.text
+  13              	.Ltext0:
+  14              		.cfi_sections	.debug_frame
+  15              		.section	.text.fifoReset,"ax",%progbits
+  16              		.align	1
+  17              		.global	fifoReset
+  18              		.arch armv6s-m
+  19              		.syntax unified
+  20              		.code	16
+  21              		.thumb_func
+  22              		.fpu softvfp
+  24              	fifoReset:
+  25              	.LVL0:
+  26              	.LFB37:
+  27              		.file 1 "Core/Src/fifo.c"
+   1:Core/Src/fifo.c **** /*************************************************************************
+   2:Core/Src/fifo.c **** 	> File Name: fifo.c
+   3:Core/Src/fifo.c **** 	> Author: Yan Li 
+   4:Core/Src/fifo.c **** 	> Mail: yan.li@apple.com 
+   5:Core/Src/fifo.c **** 	> Created Time: Sun Apr 19 14:28:53 2020
+   6:Core/Src/fifo.c ****  ************************************************************************/
+   7:Core/Src/fifo.c **** 
+   8:Core/Src/fifo.c **** #include "fifo.h"
+   9:Core/Src/fifo.c **** #include "user_func.h"
+  10:Core/Src/fifo.c **** #include <string.h>
+  11:Core/Src/fifo.c **** #include <stdlib.h>
+  12:Core/Src/fifo.c **** #include "tim.h"
+  13:Core/Src/fifo.c **** 
+  14:Core/Src/fifo.c **** void fifoReset(fifo_typedef *fifo)
+  15:Core/Src/fifo.c **** {
+  28              		.loc 1 15 1 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		@ link register save eliminated.
+  16:Core/Src/fifo.c **** 	fifo->RdIdx = fifo->WrIdx = 0;
+  33              		.loc 1 16 2 view .LVU1
+  34              		.loc 1 16 28 is_stmt 0 view .LVU2
+  35 0000 0023     		movs	r3, #0
+  36 0002 8022     		movs	r2, #128
+  37 0004 8354     		strb	r3, [r0, r2]
+  38              		.loc 1 16 14 view .LVU3
+  39 0006 0132     		adds	r2, r2, #1
+  40 0008 8354     		strb	r3, [r0, r2]
+  17:Core/Src/fifo.c **** }
+  41              		.loc 1 17 1 view .LVU4
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 2
+
+
+  42              		@ sp needed
+  43 000a 7047     		bx	lr
+  44              		.cfi_endproc
+  45              	.LFE37:
+  47              		.section	.text.fifoWrite,"ax",%progbits
+  48              		.align	1
+  49              		.global	fifoWrite
+  50              		.syntax unified
+  51              		.code	16
+  52              		.thumb_func
+  53              		.fpu softvfp
+  55              	fifoWrite:
+  56              	.LVL1:
+  57              	.LFB38:
+  18:Core/Src/fifo.c **** 
+  19:Core/Src/fifo.c **** void fifoWrite(fifo_typedef *fifo, uint8_t data)
+  20:Core/Src/fifo.c **** {
+  58              		.loc 1 20 1 is_stmt 1 view -0
+  59              		.cfi_startproc
+  60              		@ args = 0, pretend = 0, frame = 0
+  61              		@ frame_needed = 0, uses_anonymous_args = 0
+  62              		@ link register save eliminated.
+  21:Core/Src/fifo.c **** 	fifo->buf[fifo->WrIdx] = data;
+  63              		.loc 1 21 2 view .LVU6
+  64              		.loc 1 21 16 is_stmt 0 view .LVU7
+  65 0000 8022     		movs	r2, #128
+  66 0002 835C     		ldrb	r3, [r0, r2]
+  67 0004 DBB2     		uxtb	r3, r3
+  68              		.loc 1 21 25 view .LVU8
+  69 0006 C154     		strb	r1, [r0, r3]
+  22:Core/Src/fifo.c **** 	fifo->WrIdx==127? (fifo->WrIdx=0): fifo->WrIdx++;
+  70              		.loc 1 22 2 is_stmt 1 view .LVU9
+  71              		.loc 1 22 6 is_stmt 0 view .LVU10
+  72 0008 835C     		ldrb	r3, [r0, r2]
+  73              		.loc 1 22 35 view .LVU11
+  74 000a 7F2B     		cmp	r3, #127
+  75 000c 05D0     		beq	.L5
+  76              		.loc 1 22 41 discriminator 2 view .LVU12
+  77 000e 8022     		movs	r2, #128
+  78 0010 835C     		ldrb	r3, [r0, r2]
+  79              		.loc 1 22 48 discriminator 2 view .LVU13
+  80 0012 0133     		adds	r3, r3, #1
+  81 0014 DBB2     		uxtb	r3, r3
+  82 0016 8354     		strb	r3, [r0, r2]
+  83              	.L2:
+  23:Core/Src/fifo.c **** }
+  84              		.loc 1 23 1 view .LVU14
+  85              		@ sp needed
+  86 0018 7047     		bx	lr
+  87              	.L5:
+  22:Core/Src/fifo.c **** 	fifo->WrIdx==127? (fifo->WrIdx=0): fifo->WrIdx++;
+  88              		.loc 1 22 32 discriminator 1 view .LVU15
+  89 001a 0133     		adds	r3, r3, #1
+  90 001c 0022     		movs	r2, #0
+  91 001e C254     		strb	r2, [r0, r3]
+  92 0020 FAE7     		b	.L2
+  93              		.cfi_endproc
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 3
+
+
+  94              	.LFE38:
+  96              		.section	.text.fifoRead,"ax",%progbits
+  97              		.align	1
+  98              		.global	fifoRead
+  99              		.syntax unified
+ 100              		.code	16
+ 101              		.thumb_func
+ 102              		.fpu softvfp
+ 104              	fifoRead:
+ 105              	.LVL2:
+ 106              	.LFB39:
+  24:Core/Src/fifo.c **** 
+  25:Core/Src/fifo.c **** uint8_t fifoRead(fifo_typedef *fifo)
+  26:Core/Src/fifo.c **** {
+ 107              		.loc 1 26 1 is_stmt 1 view -0
+ 108              		.cfi_startproc
+ 109              		@ args = 0, pretend = 0, frame = 0
+ 110              		@ frame_needed = 0, uses_anonymous_args = 0
+ 111              		@ link register save eliminated.
+  27:Core/Src/fifo.c **** 	uint8_t data;
+ 112              		.loc 1 27 2 view .LVU17
+  28:Core/Src/fifo.c **** 
+  29:Core/Src/fifo.c **** 	fifo->RdIdx==0? (fifo->RdIdx=0): fifo->RdIdx--;
+ 113              		.loc 1 29 2 view .LVU18
+ 114              		.loc 1 29 6 is_stmt 0 view .LVU19
+ 115 0000 8123     		movs	r3, #129
+ 116 0002 C35C     		ldrb	r3, [r0, r3]
+ 117              		.loc 1 29 33 view .LVU20
+ 118 0004 002B     		cmp	r3, #0
+ 119 0006 07D1     		bne	.L7
+ 120              		.loc 1 29 30 discriminator 1 view .LVU21
+ 121 0008 8133     		adds	r3, r3, #129
+ 122 000a 0022     		movs	r2, #0
+ 123 000c C254     		strb	r2, [r0, r3]
+ 124              	.L8:
+  30:Core/Src/fifo.c **** 	data = fifo->buf[fifo->RdIdx];
+ 125              		.loc 1 30 2 is_stmt 1 view .LVU22
+ 126              		.loc 1 30 23 is_stmt 0 view .LVU23
+ 127 000e 8123     		movs	r3, #129
+ 128 0010 C35C     		ldrb	r3, [r0, r3]
+ 129 0012 DBB2     		uxtb	r3, r3
+ 130              		.loc 1 30 7 view .LVU24
+ 131 0014 C05C     		ldrb	r0, [r0, r3]
+ 132              	.LVL3:
+  31:Core/Src/fifo.c **** 	
+  32:Core/Src/fifo.c **** 	return data;
+ 133              		.loc 1 32 2 is_stmt 1 view .LVU25
+  33:Core/Src/fifo.c **** }
+ 134              		.loc 1 33 1 is_stmt 0 view .LVU26
+ 135              		@ sp needed
+ 136 0016 7047     		bx	lr
+ 137              	.LVL4:
+ 138              	.L7:
+  29:Core/Src/fifo.c **** 	data = fifo->buf[fifo->RdIdx];
+ 139              		.loc 1 29 39 discriminator 2 view .LVU27
+ 140 0018 8122     		movs	r2, #129
+ 141 001a 835C     		ldrb	r3, [r0, r2]
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 4
+
+
+  29:Core/Src/fifo.c **** 	data = fifo->buf[fifo->RdIdx];
+ 142              		.loc 1 29 46 discriminator 2 view .LVU28
+ 143 001c 013B     		subs	r3, r3, #1
+ 144 001e DBB2     		uxtb	r3, r3
+ 145 0020 8354     		strb	r3, [r0, r2]
+ 146 0022 F4E7     		b	.L8
+ 147              		.cfi_endproc
+ 148              	.LFE39:
+ 150              		.section	.rodata.fifoParser.str1.4,"aMS",%progbits,1
+ 151              		.align	2
+ 152              	.LC0:
+ 153 0000 00       		.ascii	"\000"
+ 154 0001 000000   		.align	2
+ 155              	.LC2:
+ 156 0004 2000     		.ascii	" \000"
+ 157 0006 0000     		.align	2
+ 158              	.LC4:
+ 159 0008 5D257300 		.ascii	"]%s\000"
+ 160              		.align	2
+ 161              	.LC7:
+ 162 000c 6D723332 		.ascii	"mr32\000"
+ 162      00
+ 163 0011 000000   		.align	2
+ 164              	.LC9:
+ 165 0014 3C4F4B3A 		.ascii	"<OK:%0#10x\012\000"
+ 165      25302331 
+ 165      30780A00 
+ 166              		.align	2
+ 167              	.LC11:
+ 168 0020 3C457272 		.ascii	"<Error:mr32 address\012\000"
+ 168      6F723A6D 
+ 168      72333220 
+ 168      61646472 
+ 168      6573730A 
+ 169 0035 000000   		.align	2
+ 170              	.LC13:
+ 171 0038 6D773332 		.ascii	"mw32\000"
+ 171      00
+ 172 003d 000000   		.align	2
+ 173              	.LC15:
+ 174 0040 3C4F4B3A 		.ascii	"<OK:%0#10x, %0#10x\012\000"
+ 174      25302331 
+ 174      30782C20 
+ 174      25302331 
+ 174      30780A00 
+ 175              		.align	2
+ 176              	.LC17:
+ 177 0054 3C457272 		.ascii	"<Error:mw32 address data\012\000"
+ 177      6F723A6D 
+ 177      77333220 
+ 177      61646472 
+ 177      65737320 
+ 178 006e 0000     		.align	2
+ 179              	.LC19:
+ 180 0070 74696D65 		.ascii	"timer\000"
+ 180      7200
+ 181 0076 0000     		.align	2
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 5
+
+
+ 182              	.LC22:
+ 183 0078 3C4F4B3A 		.ascii	"<OK:%0#6x, %0#6x, %0#6x, %0#6x\012\000"
+ 183      25302336 
+ 183      782C2025 
+ 183      30233678 
+ 183      2C202530 
+ 184              		.align	2
+ 185              	.LC24:
+ 186 0098 676F00   		.ascii	"go\000"
+ 187 009b 00       		.align	2
+ 188              	.LC26:
+ 189 009c 3C4F4B3A 		.ascii	"<OK: Timer go\012\000"
+ 189      2054696D 
+ 189      65722067 
+ 189      6F0A00
+ 190 00ab 00       		.align	2
+ 191              	.LC28:
+ 192 00ac 73746F70 		.ascii	"stop\000"
+ 192      00
+ 193 00b1 000000   		.align	2
+ 194              	.LC30:
+ 195 00b4 3C4F4B3A 		.ascii	"<OK: Timer stop\012\000"
+ 195      2054696D 
+ 195      65722073 
+ 195      746F700A 
+ 195      00
+ 196 00c5 000000   		.align	2
+ 197              	.LC32:
+ 198 00c8 5D0A00   		.ascii	"]\012\000"
+ 199              		.section	.text.fifoParser,"ax",%progbits
+ 200              		.align	1
+ 201              		.global	fifoParser
+ 202              		.syntax unified
+ 203              		.code	16
+ 204              		.thumb_func
+ 205              		.fpu softvfp
+ 207              	fifoParser:
+ 208              	.LVL5:
+ 209              	.LFB40:
+  34:Core/Src/fifo.c **** 
+  35:Core/Src/fifo.c **** void fifoParser(fifo_typedef *fifo)
+  36:Core/Src/fifo.c **** {
+ 210              		.loc 1 36 1 is_stmt 1 view -0
+ 211              		.cfi_startproc
+ 212              		@ args = 0, pretend = 0, frame = 272
+ 213              		@ frame_needed = 0, uses_anonymous_args = 0
+ 214              		.loc 1 36 1 is_stmt 0 view .LVU30
+ 215 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+ 216              	.LCFI0:
+ 217              		.cfi_def_cfa_offset 20
+ 218              		.cfi_offset 4, -20
+ 219              		.cfi_offset 5, -16
+ 220              		.cfi_offset 6, -12
+ 221              		.cfi_offset 7, -8
+ 222              		.cfi_offset 14, -4
+ 223 0002 C7B0     		sub	sp, sp, #284
+ 224              	.LCFI1:
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 6
+
+
+ 225              		.cfi_def_cfa_offset 304
+ 226 0004 0400     		movs	r4, r0
+  37:Core/Src/fifo.c **** 	uint8_t cmd_length = 0;
+ 227              		.loc 1 37 2 is_stmt 1 view .LVU31
+ 228              	.LVL6:
+  38:Core/Src/fifo.c **** 	uint8_t* cmd;
+ 229              		.loc 1 38 2 view .LVU32
+  39:Core/Src/fifo.c **** 	uint8_t i=0;
+ 230              		.loc 1 39 2 view .LVU33
+  40:Core/Src/fifo.c **** 	char response[128]="";
+ 231              		.loc 1 40 2 view .LVU34
+ 232              		.loc 1 40 7 is_stmt 0 view .LVU35
+ 233 0006 0023     		movs	r3, #0
+ 234 0008 2693     		str	r3, [sp, #152]
+ 235 000a 7C22     		movs	r2, #124
+ 236 000c 0021     		movs	r1, #0
+ 237 000e 27A8     		add	r0, sp, #156
+ 238              	.LVL7:
+ 239              		.loc 1 40 7 view .LVU36
+ 240 0010 FFF7FEFF 		bl	memset
+ 241              	.LVL8:
+  41:Core/Src/fifo.c **** 	uint8_t res_length = 0; // length of the response in bytes
+ 242              		.loc 1 41 2 is_stmt 1 view .LVU37
+  42:Core/Src/fifo.c **** 	testCmd_typedef testCmd;
+ 243              		.loc 1 42 2 view .LVU38
+  43:Core/Src/fifo.c **** 	uint32_t data=0;
+ 244              		.loc 1 43 2 view .LVU39
+  44:Core/Src/fifo.c **** 
+  45:Core/Src/fifo.c **** 	testCmd.cmd="";
+ 245              		.loc 1 45 2 view .LVU40
+ 246              		.loc 1 45 13 is_stmt 0 view .LVU41
+ 247 0014 8025     		movs	r5, #128
+ 248 0016 A64B     		ldr	r3, .L28
+ 249 0018 6A46     		mov	r2, sp
+ 250 001a 0821     		movs	r1, #8
+ 251 001c 5218     		adds	r2, r2, r1
+ 252 001e 5351     		str	r3, [r2, r5]
+  46:Core/Src/fifo.c **** 	memset(testCmd.command,0,128); // Clean the command buffer; Otherwise there will be gabage to hang
+ 253              		.loc 1 46 2 is_stmt 1 view .LVU42
+ 254 0020 8022     		movs	r2, #128
+ 255 0022 0021     		movs	r1, #0
+ 256 0024 02A8     		add	r0, sp, #8
+ 257 0026 FFF7FEFF 		bl	memset
+ 258              	.LVL9:
+  47:Core/Src/fifo.c ****     
+  48:Core/Src/fifo.c **** 	if((fifo->buf[fifo->WrIdx-1]==0x0A)&&(fifo->buf[fifo->WrIdx-2]==0x0D))  // if current input is 0x0
+ 259              		.loc 1 48 2 view .LVU43
+ 260              		.loc 1 48 20 is_stmt 0 view .LVU44
+ 261 002a 635D     		ldrb	r3, [r4, r5]
+ 262              		.loc 1 48 27 view .LVU45
+ 263 002c 013B     		subs	r3, r3, #1
+ 264              		.loc 1 48 15 view .LVU46
+ 265 002e E35C     		ldrb	r3, [r4, r3]
+ 266              		.loc 1 48 4 view .LVU47
+ 267 0030 0A2B     		cmp	r3, #10
+ 268 0032 01D0     		beq	.L25
+ 269              	.LVL10:
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 7
+
+
+ 270              	.L9:
+  49:Core/Src/fifo.c **** 	{ 
+  50:Core/Src/fifo.c **** 		if (fifo->WrIdx > fifo-> RdIdx)   // if writer pointer is ahead of read pointer
+  51:Core/Src/fifo.c **** 		{
+  52:Core/Src/fifo.c **** 			cmd_length = fifo->WrIdx - fifo->RdIdx-2;  // Remove \r\n characters
+  53:Core/Src/fifo.c **** 			cmd = (uint8_t *) (fifo->buf+fifo->RdIdx); // cmd start from the address (fifo->buf + RdIdx+1)
+  54:Core/Src/fifo.c **** 			fifo->WrIdx = fifo->RdIdx; // back off writer pointer to read pointer
+  55:Core/Src/fifo.c **** 			if (cmd_length>0)
+  56:Core/Src/fifo.c **** 			{ 
+  57:Core/Src/fifo.c **** 				// Parsing the input command and parameters 
+  58:Core/Src/fifo.c **** 				while(i<cmd_length) {testCmd.command[i]=cmd[i];i++;}
+  59:Core/Src/fifo.c **** 				testCmd.cmd = strtok(testCmd.command, " "); 
+  60:Core/Src/fifo.c **** 				if(testCmd.command!=NULL) testCmd.param1= strtok(NULL," "); else testCmd.param1=NULL; 
+  61:Core/Src/fifo.c **** 				if(testCmd.command!=NULL) testCmd.param2= strtok(NULL," "); else testCmd.param2=NULL; 
+  62:Core/Src/fifo.c **** 				if(testCmd.command!=NULL) testCmd.param3= strtok(NULL," "); else testCmd.param3=NULL;
+  63:Core/Src/fifo.c **** 			}
+  64:Core/Src/fifo.c **** 			sprintf(response, "]%s",cmd);
+  65:Core/Src/fifo.c **** 			res_length = cmd_length+2;
+  66:Core/Src/fifo.c **** 			HAL_UART_Transmit(&testUartHandle, (uint8_t *) response,res_length,1000); // output, the length 
+  67:Core/Src/fifo.c **** 
+  68:Core/Src/fifo.c **** 		// memory read function - mr32(addr)
+  69:Core/Src/fifo.c **** 		if (strcmp(testCmd.cmd,"mr32")==0) 
+  70:Core/Src/fifo.c **** 			{
+  71:Core/Src/fifo.c **** 				if(testCmd.param1!=NULL) 
+  72:Core/Src/fifo.c **** 				{
+  73:Core/Src/fifo.c **** 					data = mr32((uint32_t) strtol(testCmd.param1,NULL,16)); // input format is hex like 0x40004400
+  74:Core/Src/fifo.c **** 					sprintf(response,"<OK:%0#10x\n",(unsigned int) data); // output 4bytes 
+  75:Core/Src/fifo.c **** 					res_length = 15;
+  76:Core/Src/fifo.c **** 				}else
+  77:Core/Src/fifo.c **** 				{
+  78:Core/Src/fifo.c **** 					sprintf(response,"<Error:mr32 address\n"); // help
+  79:Core/Src/fifo.c **** 					res_length = 20;
+  80:Core/Src/fifo.c **** 				}
+  81:Core/Src/fifo.c **** 				HAL_UART_Transmit(&testUartHandle, (uint8_t *) response,res_length,1000); // output, the length
+  82:Core/Src/fifo.c **** 			}
+  83:Core/Src/fifo.c **** 
+  84:Core/Src/fifo.c **** 		// memory write function - mw32(addr, data)
+  85:Core/Src/fifo.c **** 		if (strcmp(testCmd.cmd,"mw32")==0) 
+  86:Core/Src/fifo.c **** 			{
+  87:Core/Src/fifo.c **** 				if((testCmd.param1!=NULL)&&(testCmd.param2!=NULL))
+  88:Core/Src/fifo.c **** 				{
+  89:Core/Src/fifo.c **** 					int32_t address = (uint32_t) strtol(testCmd.param1,NULL,16);
+  90:Core/Src/fifo.c **** 					mw32(address, (uint32_t) strtol(testCmd.param2,NULL,16)); // input format is hex like 0x400044
+  91:Core/Src/fifo.c **** 					data = mr32((uint32_t) address); // input format is hex like 0x40004400 or FFFFFFFFFF
+  92:Core/Src/fifo.c **** 					sprintf(response,"<OK:%0#10x, %0#10x\n", (unsigned int) address,(unsigned int) data); // outpu
+  93:Core/Src/fifo.c **** 					res_length = 27;
+  94:Core/Src/fifo.c **** 				}else
+  95:Core/Src/fifo.c **** 				{
+  96:Core/Src/fifo.c **** 					sprintf(response,"<Error:mw32 address data\n"); // help
+  97:Core/Src/fifo.c **** 					res_length = 25;
+  98:Core/Src/fifo.c **** 				}
+  99:Core/Src/fifo.c **** 				HAL_UART_Transmit(&testUartHandle, (uint8_t *) response,res_length,1000); // output, the length
+ 100:Core/Src/fifo.c **** 			}
+ 101:Core/Src/fifo.c **** 
+ 102:Core/Src/fifo.c **** 		if (strcmp(testCmd.cmd,"timer")==0) 
+ 103:Core/Src/fifo.c **** 			{
+ 104:Core/Src/fifo.c **** 				if((testCmd.param1!=NULL)&&(testCmd.param2!=NULL))
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 8
+
+
+ 105:Core/Src/fifo.c **** 				{
+ 106:Core/Src/fifo.c **** 					uint16_t TimerCnt = htim3.Instance->CNT; // Base timer counter
+ 107:Core/Src/fifo.c **** 					uint16_t TimerCC3Cnt = htim3.Instance->CCR3; // input capture 3 register
+ 108:Core/Src/fifo.c **** 					uint16_t TimerCC4Cnt = htim3.Instance->CCR4; // input capture 4 register
+ 109:Core/Src/fifo.c **** 					uint16_t TimerSR = htim3.Instance->DIER; // Status register
+ 110:Core/Src/fifo.c **** 
+ 111:Core/Src/fifo.c **** 					sprintf(response,"<OK:%0#6x, %0#6x, %0#6x, %0#6x\n", (unsigned int) TimerCnt,(unsigned int) Ti
+ 112:Core/Src/fifo.c **** 					res_length = 35;
+ 113:Core/Src/fifo.c **** 				}
+ 114:Core/Src/fifo.c **** 				if(strcmp(testCmd.param1,"go")==0)
+ 115:Core/Src/fifo.c **** 				{
+ 116:Core/Src/fifo.c **** 					MX_TIMER_Enable();
+ 117:Core/Src/fifo.c **** 					sprintf(response,"<OK: Timer go\n"); // help
+ 118:Core/Src/fifo.c **** 					res_length = 14;
+ 119:Core/Src/fifo.c **** 				}
+ 120:Core/Src/fifo.c **** 				if(strcmp(testCmd.param1,"stop")==0)
+ 121:Core/Src/fifo.c **** 				{
+ 122:Core/Src/fifo.c **** 					MX_TIMER_Disable();
+ 123:Core/Src/fifo.c **** 					sprintf(response,"<OK: Timer stop\n"); // help
+ 124:Core/Src/fifo.c **** 					res_length = 16;
+ 125:Core/Src/fifo.c **** 				}
+ 126:Core/Src/fifo.c **** 				HAL_UART_Transmit(&testUartHandle, (uint8_t *) response,res_length,1000); // output, the length
+ 127:Core/Src/fifo.c **** 			}
+ 128:Core/Src/fifo.c **** 
+ 129:Core/Src/fifo.c **** 		// When execution is over, print a new ] for notification
+ 130:Core/Src/fifo.c **** 		sprintf(response,"]\n"); // output 4bytes 
+ 131:Core/Src/fifo.c **** 		res_length = 2;
+ 132:Core/Src/fifo.c **** 		HAL_UART_Transmit(&testUartHandle, (uint8_t *) response,res_length,1000); // output, the length o
+ 133:Core/Src/fifo.c **** 		}
+ 134:Core/Src/fifo.c **** 	}
+ 135:Core/Src/fifo.c **** }...
+ 271              		.loc 1 135 1 view .LVU48
+ 272 0034 47B0     		add	sp, sp, #284
+ 273              		@ sp needed
+ 274 0036 F0BD     		pop	{r4, r5, r6, r7, pc}
+ 275              	.LVL11:
+ 276              	.L25:
+  48:Core/Src/fifo.c **** 	if((fifo->buf[fifo->WrIdx-1]==0x0A)&&(fifo->buf[fifo->WrIdx-2]==0x0D))  // if current input is 0x0
+ 277              		.loc 1 48 54 discriminator 1 view .LVU49
+ 278 0038 7633     		adds	r3, r3, #118
+ 279 003a E35C     		ldrb	r3, [r4, r3]
+  48:Core/Src/fifo.c **** 	if((fifo->buf[fifo->WrIdx-1]==0x0A)&&(fifo->buf[fifo->WrIdx-2]==0x0D))  // if current input is 0x0
+ 280              		.loc 1 48 61 discriminator 1 view .LVU50
+ 281 003c 023B     		subs	r3, r3, #2
+  48:Core/Src/fifo.c **** 	if((fifo->buf[fifo->WrIdx-1]==0x0A)&&(fifo->buf[fifo->WrIdx-2]==0x0D))  // if current input is 0x0
+ 282              		.loc 1 48 49 discriminator 1 view .LVU51
+ 283 003e E35C     		ldrb	r3, [r4, r3]
+  48:Core/Src/fifo.c **** 	if((fifo->buf[fifo->WrIdx-1]==0x0A)&&(fifo->buf[fifo->WrIdx-2]==0x0D))  // if current input is 0x0
+ 284              		.loc 1 48 37 discriminator 1 view .LVU52
+ 285 0040 0D2B     		cmp	r3, #13
+ 286 0042 F7D1     		bne	.L9
+  50:Core/Src/fifo.c **** 		if (fifo->WrIdx > fifo-> RdIdx)   // if writer pointer is ahead of read pointer
+ 287              		.loc 1 50 3 is_stmt 1 view .LVU53
+  50:Core/Src/fifo.c **** 		if (fifo->WrIdx > fifo-> RdIdx)   // if writer pointer is ahead of read pointer
+ 288              		.loc 1 50 11 is_stmt 0 view .LVU54
+ 289 0044 7333     		adds	r3, r3, #115
+ 290 0046 E25C     		ldrb	r2, [r4, r3]
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 9
+
+
+ 291 0048 D2B2     		uxtb	r2, r2
+  50:Core/Src/fifo.c **** 		if (fifo->WrIdx > fifo-> RdIdx)   // if writer pointer is ahead of read pointer
+ 292              		.loc 1 50 25 view .LVU55
+ 293 004a 0133     		adds	r3, r3, #1
+ 294 004c E35C     		ldrb	r3, [r4, r3]
+ 295 004e DBB2     		uxtb	r3, r3
+  50:Core/Src/fifo.c **** 		if (fifo->WrIdx > fifo-> RdIdx)   // if writer pointer is ahead of read pointer
+ 296              		.loc 1 50 6 view .LVU56
+ 297 0050 9A42     		cmp	r2, r3
+ 298 0052 EFD9     		bls	.L9
+  52:Core/Src/fifo.c **** 			cmd_length = fifo->WrIdx - fifo->RdIdx-2;  // Remove \r\n characters
+ 299              		.loc 1 52 4 is_stmt 1 view .LVU57
+  52:Core/Src/fifo.c **** 			cmd_length = fifo->WrIdx - fifo->RdIdx-2;  // Remove \r\n characters
+ 300              		.loc 1 52 21 is_stmt 0 view .LVU58
+ 301 0054 8022     		movs	r2, #128
+ 302 0056 A55C     		ldrb	r5, [r4, r2]
+  52:Core/Src/fifo.c **** 			cmd_length = fifo->WrIdx - fifo->RdIdx-2;  // Remove \r\n characters
+ 303              		.loc 1 52 35 view .LVU59
+ 304 0058 8123     		movs	r3, #129
+ 305 005a E15C     		ldrb	r1, [r4, r3]
+  52:Core/Src/fifo.c **** 			cmd_length = fifo->WrIdx - fifo->RdIdx-2;  // Remove \r\n characters
+ 306              		.loc 1 52 29 view .LVU60
+ 307 005c 6D1A     		subs	r5, r5, r1
+ 308 005e EDB2     		uxtb	r5, r5
+  52:Core/Src/fifo.c **** 			cmd_length = fifo->WrIdx - fifo->RdIdx-2;  // Remove \r\n characters
+ 309              		.loc 1 52 15 view .LVU61
+ 310 0060 A91E     		subs	r1, r5, #2
+ 311 0062 C9B2     		uxtb	r1, r1
+ 312              	.LVL12:
+  53:Core/Src/fifo.c **** 			cmd = (uint8_t *) (fifo->buf+fifo->RdIdx); // cmd start from the address (fifo->buf + RdIdx+1)
+ 313              		.loc 1 53 4 is_stmt 1 view .LVU62
+  53:Core/Src/fifo.c **** 			cmd = (uint8_t *) (fifo->buf+fifo->RdIdx); // cmd start from the address (fifo->buf + RdIdx+1)
+ 314              		.loc 1 53 37 is_stmt 0 view .LVU63
+ 315 0064 E65C     		ldrb	r6, [r4, r3]
+  53:Core/Src/fifo.c **** 			cmd = (uint8_t *) (fifo->buf+fifo->RdIdx); // cmd start from the address (fifo->buf + RdIdx+1)
+ 316              		.loc 1 53 8 view .LVU64
+ 317 0066 A619     		adds	r6, r4, r6
+ 318              	.LVL13:
+  54:Core/Src/fifo.c **** 			fifo->WrIdx = fifo->RdIdx; // back off writer pointer to read pointer
+ 319              		.loc 1 54 4 is_stmt 1 view .LVU65
+  54:Core/Src/fifo.c **** 			fifo->WrIdx = fifo->RdIdx; // back off writer pointer to read pointer
+ 320              		.loc 1 54 22 is_stmt 0 view .LVU66
+ 321 0068 E35C     		ldrb	r3, [r4, r3]
+ 322 006a DBB2     		uxtb	r3, r3
+  54:Core/Src/fifo.c **** 			fifo->WrIdx = fifo->RdIdx; // back off writer pointer to read pointer
+ 323              		.loc 1 54 16 view .LVU67
+ 324 006c A354     		strb	r3, [r4, r2]
+  55:Core/Src/fifo.c **** 			if (cmd_length>0)
+ 325              		.loc 1 55 4 is_stmt 1 view .LVU68
+  55:Core/Src/fifo.c **** 			if (cmd_length>0)
+ 326              		.loc 1 55 7 is_stmt 0 view .LVU69
+ 327 006e 0029     		cmp	r1, #0
+ 328 0070 00D0     		beq	.LCB217
+ 329 0072 8BE0     		b	.L24	@long jump
+ 330              	.LCB217:
+ 331              	.LVL14:
+ 332              	.L12:
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 10
+
+
+  64:Core/Src/fifo.c **** 			sprintf(response, "]%s",cmd);
+ 333              		.loc 1 64 4 is_stmt 1 view .LVU70
+ 334 0074 3200     		movs	r2, r6
+ 335 0076 8F49     		ldr	r1, .L28+4
+ 336 0078 26A8     		add	r0, sp, #152
+ 337 007a FFF7FEFF 		bl	sprintf
+ 338              	.LVL15:
+  65:Core/Src/fifo.c **** 			res_length = cmd_length+2;
+ 339              		.loc 1 65 4 view .LVU71
+  66:Core/Src/fifo.c **** 			HAL_UART_Transmit(&testUartHandle, (uint8_t *) response,res_length,1000); // output, the length 
+ 340              		.loc 1 66 4 view .LVU72
+ 341 007e FA23     		movs	r3, #250
+ 342 0080 AAB2     		uxth	r2, r5
+ 343 0082 9B00     		lsls	r3, r3, #2
+ 344 0084 26A9     		add	r1, sp, #152
+ 345 0086 8C48     		ldr	r0, .L28+8
+ 346 0088 FFF7FEFF 		bl	HAL_UART_Transmit
+ 347              	.LVL16:
+  69:Core/Src/fifo.c **** 		if (strcmp(testCmd.cmd,"mr32")==0) 
+ 348              		.loc 1 69 3 view .LVU73
+  69:Core/Src/fifo.c **** 		if (strcmp(testCmd.cmd,"mr32")==0) 
+ 349              		.loc 1 69 21 is_stmt 0 view .LVU74
+ 350 008c 8023     		movs	r3, #128
+ 351 008e 6A46     		mov	r2, sp
+ 352 0090 0824     		movs	r4, #8
+ 353 0092 1219     		adds	r2, r2, r4
+ 354 0094 D058     		ldr	r0, [r2, r3]
+  69:Core/Src/fifo.c **** 		if (strcmp(testCmd.cmd,"mr32")==0) 
+ 355              		.loc 1 69 7 view .LVU75
+ 356 0096 8949     		ldr	r1, .L28+12
+ 357 0098 FFF7FEFF 		bl	strcmp
+ 358              	.LVL17:
+  69:Core/Src/fifo.c **** 		if (strcmp(testCmd.cmd,"mr32")==0) 
+ 359              		.loc 1 69 6 view .LVU76
+ 360 009c 0028     		cmp	r0, #0
+ 361 009e 18D1     		bne	.L14
+  71:Core/Src/fifo.c **** 				if(testCmd.param1!=NULL) 
+ 362              		.loc 1 71 5 is_stmt 1 view .LVU77
+  71:Core/Src/fifo.c **** 				if(testCmd.param1!=NULL) 
+ 363              		.loc 1 71 15 is_stmt 0 view .LVU78
+ 364 00a0 8423     		movs	r3, #132
+ 365 00a2 6A46     		mov	r2, sp
+ 366 00a4 1219     		adds	r2, r2, r4
+ 367 00a6 D058     		ldr	r0, [r2, r3]
+  71:Core/Src/fifo.c **** 				if(testCmd.param1!=NULL) 
+ 368              		.loc 1 71 7 view .LVU79
+ 369 00a8 0028     		cmp	r0, #0
+ 370 00aa 71D0     		beq	.L15
+  73:Core/Src/fifo.c **** 					data = mr32((uint32_t) strtol(testCmd.param1,NULL,16)); // input format is hex like 0x40004400
+ 371              		.loc 1 73 6 is_stmt 1 view .LVU80
+  73:Core/Src/fifo.c **** 					data = mr32((uint32_t) strtol(testCmd.param1,NULL,16)); // input format is hex like 0x40004400
+ 372              		.loc 1 73 29 is_stmt 0 view .LVU81
+ 373 00ac 1022     		movs	r2, #16
+ 374 00ae 0021     		movs	r1, #0
+ 375 00b0 FFF7FEFF 		bl	strtol
+ 376              	.LVL18:
+  73:Core/Src/fifo.c **** 					data = mr32((uint32_t) strtol(testCmd.param1,NULL,16)); // input format is hex like 0x40004400
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 11
+
+
+ 377              		.loc 1 73 13 view .LVU82
+ 378 00b4 FFF7FEFF 		bl	mr32
+ 379              	.LVL19:
+ 380 00b8 0200     		movs	r2, r0
+ 381              	.LVL20:
+  74:Core/Src/fifo.c **** 					sprintf(response,"<OK:%0#10x\n",(unsigned int) data); // output 4bytes 
+ 382              		.loc 1 74 6 is_stmt 1 view .LVU83
+ 383 00ba 8149     		ldr	r1, .L28+16
+ 384 00bc 26A8     		add	r0, sp, #152
+ 385              	.LVL21:
+  74:Core/Src/fifo.c **** 					sprintf(response,"<OK:%0#10x\n",(unsigned int) data); // output 4bytes 
+ 386              		.loc 1 74 6 is_stmt 0 view .LVU84
+ 387 00be FFF7FEFF 		bl	sprintf
+ 388              	.LVL22:
+  75:Core/Src/fifo.c **** 					res_length = 15;
+ 389              		.loc 1 75 6 is_stmt 1 view .LVU85
+  75:Core/Src/fifo.c **** 					res_length = 15;
+ 390              		.loc 1 75 17 is_stmt 0 view .LVU86
+ 391 00c2 0F25     		movs	r5, #15
+ 392              	.LVL23:
+ 393              	.L16:
+  81:Core/Src/fifo.c **** 				HAL_UART_Transmit(&testUartHandle, (uint8_t *) response,res_length,1000); // output, the length
+ 394              		.loc 1 81 5 is_stmt 1 view .LVU87
+ 395 00c4 FA23     		movs	r3, #250
+ 396 00c6 AAB2     		uxth	r2, r5
+ 397 00c8 9B00     		lsls	r3, r3, #2
+ 398 00ca 26A9     		add	r1, sp, #152
+ 399 00cc 7A48     		ldr	r0, .L28+8
+ 400 00ce FFF7FEFF 		bl	HAL_UART_Transmit
+ 401              	.LVL24:
+ 402              	.L14:
+  85:Core/Src/fifo.c **** 		if (strcmp(testCmd.cmd,"mw32")==0) 
+ 403              		.loc 1 85 3 view .LVU88
+  85:Core/Src/fifo.c **** 		if (strcmp(testCmd.cmd,"mw32")==0) 
+ 404              		.loc 1 85 21 is_stmt 0 view .LVU89
+ 405 00d2 8023     		movs	r3, #128
+ 406 00d4 6A46     		mov	r2, sp
+ 407 00d6 0824     		movs	r4, #8
+ 408 00d8 1219     		adds	r2, r2, r4
+ 409 00da D058     		ldr	r0, [r2, r3]
+  85:Core/Src/fifo.c **** 		if (strcmp(testCmd.cmd,"mw32")==0) 
+ 410              		.loc 1 85 7 view .LVU90
+ 411 00dc 7949     		ldr	r1, .L28+20
+ 412 00de FFF7FEFF 		bl	strcmp
+ 413              	.LVL25:
+  85:Core/Src/fifo.c **** 		if (strcmp(testCmd.cmd,"mw32")==0) 
+ 414              		.loc 1 85 6 view .LVU91
+ 415 00e2 0028     		cmp	r0, #0
+ 416 00e4 70D1     		bne	.L17
+  87:Core/Src/fifo.c **** 				if((testCmd.param1!=NULL)&&(testCmd.param2!=NULL))
+ 417              		.loc 1 87 5 is_stmt 1 view .LVU92
+  87:Core/Src/fifo.c **** 				if((testCmd.param1!=NULL)&&(testCmd.param2!=NULL))
+ 418              		.loc 1 87 16 is_stmt 0 view .LVU93
+ 419 00e6 8423     		movs	r3, #132
+ 420 00e8 6A46     		mov	r2, sp
+ 421 00ea 1219     		adds	r2, r2, r4
+ 422 00ec D058     		ldr	r0, [r2, r3]
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 12
+
+
+  87:Core/Src/fifo.c **** 				if((testCmd.param1!=NULL)&&(testCmd.param2!=NULL))
+ 423              		.loc 1 87 7 view .LVU94
+ 424 00ee 0028     		cmp	r0, #0
+ 425 00f0 59D0     		beq	.L18
+  87:Core/Src/fifo.c **** 				if((testCmd.param1!=NULL)&&(testCmd.param2!=NULL))
+ 426              		.loc 1 87 40 discriminator 1 view .LVU95
+ 427 00f2 0433     		adds	r3, r3, #4
+ 428 00f4 6A46     		mov	r2, sp
+ 429 00f6 2500     		movs	r5, r4
+ 430              	.LVL26:
+  87:Core/Src/fifo.c **** 				if((testCmd.param1!=NULL)&&(testCmd.param2!=NULL))
+ 431              		.loc 1 87 40 discriminator 1 view .LVU96
+ 432 00f8 1219     		adds	r2, r2, r4
+ 433 00fa D358     		ldr	r3, [r2, r3]
+  87:Core/Src/fifo.c **** 				if((testCmd.param1!=NULL)&&(testCmd.param2!=NULL))
+ 434              		.loc 1 87 30 discriminator 1 view .LVU97
+ 435 00fc 002B     		cmp	r3, #0
+ 436 00fe 52D0     		beq	.L18
+ 437              	.LBB2:
+  89:Core/Src/fifo.c **** 					int32_t address = (uint32_t) strtol(testCmd.param1,NULL,16);
+ 438              		.loc 1 89 6 is_stmt 1 view .LVU98
+  89:Core/Src/fifo.c **** 					int32_t address = (uint32_t) strtol(testCmd.param1,NULL,16);
+ 439              		.loc 1 89 35 is_stmt 0 view .LVU99
+ 440 0100 1022     		movs	r2, #16
+ 441 0102 0021     		movs	r1, #0
+ 442 0104 FFF7FEFF 		bl	strtol
+ 443              	.LVL27:
+ 444 0108 0400     		movs	r4, r0
+ 445              	.LVL28:
+  90:Core/Src/fifo.c **** 					mw32(address, (uint32_t) strtol(testCmd.param2,NULL,16)); // input format is hex like 0x400044
+ 446              		.loc 1 90 6 is_stmt 1 view .LVU100
+  90:Core/Src/fifo.c **** 					mw32(address, (uint32_t) strtol(testCmd.param2,NULL,16)); // input format is hex like 0x400044
+ 447              		.loc 1 90 45 is_stmt 0 view .LVU101
+ 448 010a 8823     		movs	r3, #136
+ 449 010c 6A46     		mov	r2, sp
+ 450 010e 5219     		adds	r2, r2, r5
+ 451 0110 D058     		ldr	r0, [r2, r3]
+ 452              	.LVL29:
+  90:Core/Src/fifo.c **** 					mw32(address, (uint32_t) strtol(testCmd.param2,NULL,16)); // input format is hex like 0x400044
+ 453              		.loc 1 90 31 view .LVU102
+ 454 0112 1022     		movs	r2, #16
+ 455 0114 0021     		movs	r1, #0
+ 456 0116 FFF7FEFF 		bl	strtol
+ 457              	.LVL30:
+ 458 011a 0100     		movs	r1, r0
+  90:Core/Src/fifo.c **** 					mw32(address, (uint32_t) strtol(testCmd.param2,NULL,16)); // input format is hex like 0x400044
+ 459              		.loc 1 90 6 view .LVU103
+ 460 011c 2000     		movs	r0, r4
+ 461 011e FFF7FEFF 		bl	mw32
+ 462              	.LVL31:
+  91:Core/Src/fifo.c **** 					data = mr32((uint32_t) address); // input format is hex like 0x40004400 or FFFFFFFFFF
+ 463              		.loc 1 91 6 is_stmt 1 view .LVU104
+  91:Core/Src/fifo.c **** 					data = mr32((uint32_t) address); // input format is hex like 0x40004400 or FFFFFFFFFF
+ 464              		.loc 1 91 13 is_stmt 0 view .LVU105
+ 465 0122 2000     		movs	r0, r4
+ 466 0124 FFF7FEFF 		bl	mr32
+ 467              	.LVL32:
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 13
+
+
+ 468 0128 0300     		movs	r3, r0
+ 469              	.LVL33:
+  92:Core/Src/fifo.c **** 					sprintf(response,"<OK:%0#10x, %0#10x\n", (unsigned int) address,(unsigned int) data); // outpu
+ 470              		.loc 1 92 6 is_stmt 1 view .LVU106
+ 471 012a 2200     		movs	r2, r4
+ 472 012c 6649     		ldr	r1, .L28+24
+ 473 012e 26A8     		add	r0, sp, #152
+ 474              	.LVL34:
+  92:Core/Src/fifo.c **** 					sprintf(response,"<OK:%0#10x, %0#10x\n", (unsigned int) address,(unsigned int) data); // outpu
+ 475              		.loc 1 92 6 is_stmt 0 view .LVU107
+ 476 0130 FFF7FEFF 		bl	sprintf
+ 477              	.LVL35:
+  93:Core/Src/fifo.c **** 					res_length = 27;
+ 478              		.loc 1 93 6 is_stmt 1 view .LVU108
+  93:Core/Src/fifo.c **** 					res_length = 27;
+ 479              		.loc 1 93 17 is_stmt 0 view .LVU109
+ 480 0134 1335     		adds	r5, r5, #19
+ 481              	.LBE2:
+  88:Core/Src/fifo.c **** 				{
+ 482              		.loc 1 88 5 view .LVU110
+ 483 0136 40E0     		b	.L19
+ 484              	.LVL36:
+ 485              	.L13:
+  58:Core/Src/fifo.c **** 				while(i<cmd_length) {testCmd.command[i]=cmd[i];i++;}
+ 486              		.loc 1 58 26 is_stmt 1 discriminator 2 view .LVU111
+  58:Core/Src/fifo.c **** 				while(i<cmd_length) {testCmd.command[i]=cmd[i];i++;}
+ 487              		.loc 1 58 48 is_stmt 0 discriminator 2 view .LVU112
+ 488 0138 F05C     		ldrb	r0, [r6, r3]
+  58:Core/Src/fifo.c **** 				while(i<cmd_length) {testCmd.command[i]=cmd[i];i++;}
+ 489              		.loc 1 58 44 discriminator 2 view .LVU113
+ 490 013a 02AA     		add	r2, sp, #8
+ 491 013c D054     		strb	r0, [r2, r3]
+  58:Core/Src/fifo.c **** 				while(i<cmd_length) {testCmd.command[i]=cmd[i];i++;}
+ 492              		.loc 1 58 52 is_stmt 1 discriminator 2 view .LVU114
+  58:Core/Src/fifo.c **** 				while(i<cmd_length) {testCmd.command[i]=cmd[i];i++;}
+ 493              		.loc 1 58 53 is_stmt 0 discriminator 2 view .LVU115
+ 494 013e 0133     		adds	r3, r3, #1
+ 495              	.LVL37:
+  58:Core/Src/fifo.c **** 				while(i<cmd_length) {testCmd.command[i]=cmd[i];i++;}
+ 496              		.loc 1 58 53 discriminator 2 view .LVU116
+ 497 0140 DBB2     		uxtb	r3, r3
+ 498              	.LVL38:
+ 499              	.L11:
+  58:Core/Src/fifo.c **** 				while(i<cmd_length) {testCmd.command[i]=cmd[i];i++;}
+ 500              		.loc 1 58 10 is_stmt 1 discriminator 1 view .LVU117
+ 501 0142 8B42     		cmp	r3, r1
+ 502 0144 F8D3     		bcc	.L13
+  59:Core/Src/fifo.c **** 				testCmd.cmd = strtok(testCmd.command, " "); 
+ 503              		.loc 1 59 5 view .LVU118
+  59:Core/Src/fifo.c **** 				testCmd.cmd = strtok(testCmd.command, " "); 
+ 504              		.loc 1 59 19 is_stmt 0 view .LVU119
+ 505 0146 614C     		ldr	r4, .L28+28
+ 506              	.LVL39:
+  59:Core/Src/fifo.c **** 				testCmd.cmd = strtok(testCmd.command, " "); 
+ 507              		.loc 1 59 19 view .LVU120
+ 508 0148 2100     		movs	r1, r4
+ 509              	.LVL40:
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 14
+
+
+  59:Core/Src/fifo.c **** 				testCmd.cmd = strtok(testCmd.command, " "); 
+ 510              		.loc 1 59 19 view .LVU121
+ 511 014a 02A8     		add	r0, sp, #8
+ 512 014c FFF7FEFF 		bl	strtok
+ 513              	.LVL41:
+  59:Core/Src/fifo.c **** 				testCmd.cmd = strtok(testCmd.command, " "); 
+ 514              		.loc 1 59 17 view .LVU122
+ 515 0150 8023     		movs	r3, #128
+ 516 0152 6A46     		mov	r2, sp
+ 517 0154 0827     		movs	r7, #8
+ 518 0156 D219     		adds	r2, r2, r7
+ 519 0158 D050     		str	r0, [r2, r3]
+  60:Core/Src/fifo.c **** 				if(testCmd.command!=NULL) testCmd.param1= strtok(NULL," "); else testCmd.param1=NULL; 
+ 520              		.loc 1 60 5 is_stmt 1 view .LVU123
+  60:Core/Src/fifo.c **** 				if(testCmd.command!=NULL) testCmd.param1= strtok(NULL," "); else testCmd.param1=NULL; 
+ 521              		.loc 1 60 31 view .LVU124
+  60:Core/Src/fifo.c **** 				if(testCmd.command!=NULL) testCmd.param1= strtok(NULL," "); else testCmd.param1=NULL; 
+ 522              		.loc 1 60 47 is_stmt 0 view .LVU125
+ 523 015a 2100     		movs	r1, r4
+ 524 015c 0020     		movs	r0, #0
+ 525 015e FFF7FEFF 		bl	strtok
+ 526              	.LVL42:
+  60:Core/Src/fifo.c **** 				if(testCmd.command!=NULL) testCmd.param1= strtok(NULL," "); else testCmd.param1=NULL; 
+ 527              		.loc 1 60 45 view .LVU126
+ 528 0162 8423     		movs	r3, #132
+ 529 0164 6A46     		mov	r2, sp
+ 530 0166 D219     		adds	r2, r2, r7
+ 531 0168 D050     		str	r0, [r2, r3]
+  61:Core/Src/fifo.c **** 				if(testCmd.command!=NULL) testCmd.param2= strtok(NULL," "); else testCmd.param2=NULL; 
+ 532              		.loc 1 61 5 is_stmt 1 view .LVU127
+  61:Core/Src/fifo.c **** 				if(testCmd.command!=NULL) testCmd.param2= strtok(NULL," "); else testCmd.param2=NULL; 
+ 533              		.loc 1 61 31 view .LVU128
+  61:Core/Src/fifo.c **** 				if(testCmd.command!=NULL) testCmd.param2= strtok(NULL," "); else testCmd.param2=NULL; 
+ 534              		.loc 1 61 47 is_stmt 0 view .LVU129
+ 535 016a 2100     		movs	r1, r4
+ 536 016c 0020     		movs	r0, #0
+ 537 016e FFF7FEFF 		bl	strtok
+ 538              	.LVL43:
+  61:Core/Src/fifo.c **** 				if(testCmd.command!=NULL) testCmd.param2= strtok(NULL," "); else testCmd.param2=NULL; 
+ 539              		.loc 1 61 45 view .LVU130
+ 540 0172 8823     		movs	r3, #136
+ 541 0174 6A46     		mov	r2, sp
+ 542 0176 D219     		adds	r2, r2, r7
+ 543 0178 D050     		str	r0, [r2, r3]
+  62:Core/Src/fifo.c **** 				if(testCmd.command!=NULL) testCmd.param3= strtok(NULL," "); else testCmd.param3=NULL;
+ 544              		.loc 1 62 5 is_stmt 1 view .LVU131
+  62:Core/Src/fifo.c **** 				if(testCmd.command!=NULL) testCmd.param3= strtok(NULL," "); else testCmd.param3=NULL;
+ 545              		.loc 1 62 31 view .LVU132
+  62:Core/Src/fifo.c **** 				if(testCmd.command!=NULL) testCmd.param3= strtok(NULL," "); else testCmd.param3=NULL;
+ 546              		.loc 1 62 47 is_stmt 0 view .LVU133
+ 547 017a 2100     		movs	r1, r4
+ 548 017c 0020     		movs	r0, #0
+ 549 017e FFF7FEFF 		bl	strtok
+ 550              	.LVL44:
+  62:Core/Src/fifo.c **** 				if(testCmd.command!=NULL) testCmd.param3= strtok(NULL," "); else testCmd.param3=NULL;
+ 551              		.loc 1 62 45 view .LVU134
+ 552 0182 8C23     		movs	r3, #140
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 15
+
+
+ 553 0184 6A46     		mov	r2, sp
+ 554 0186 D219     		adds	r2, r2, r7
+ 555 0188 D050     		str	r0, [r2, r3]
+ 556 018a 73E7     		b	.L12
+ 557              	.LVL45:
+ 558              	.L24:
+  39:Core/Src/fifo.c **** 	uint8_t i=0;
+ 559              		.loc 1 39 10 view .LVU135
+ 560 018c 0023     		movs	r3, #0
+ 561 018e D8E7     		b	.L11
+ 562              	.LVL46:
+ 563              	.L15:
+  78:Core/Src/fifo.c **** 					sprintf(response,"<Error:mr32 address\n"); // help
+ 564              		.loc 1 78 6 is_stmt 1 view .LVU136
+ 565 0190 26A9     		add	r1, sp, #152
+ 566 0192 4F4B     		ldr	r3, .L28+32
+ 567 0194 0A00     		movs	r2, r1
+ 568 0196 13CB     		ldmia	r3!, {r0, r1, r4}
+ 569 0198 13C2     		stmia	r2!, {r0, r1, r4}
+ 570 019a 03CB     		ldmia	r3!, {r0, r1}
+ 571 019c 03C2     		stmia	r2!, {r0, r1}
+ 572 019e 1B78     		ldrb	r3, [r3]
+ 573 01a0 1370     		strb	r3, [r2]
+  79:Core/Src/fifo.c **** 					res_length = 20;
+ 574              		.loc 1 79 6 view .LVU137
+ 575              	.LVL47:
+  79:Core/Src/fifo.c **** 					res_length = 20;
+ 576              		.loc 1 79 17 is_stmt 0 view .LVU138
+ 577 01a2 1425     		movs	r5, #20
+ 578              	.LVL48:
+  79:Core/Src/fifo.c **** 					res_length = 20;
+ 579              		.loc 1 79 17 view .LVU139
+ 580 01a4 8EE7     		b	.L16
+ 581              	.LVL49:
+ 582              	.L18:
+  96:Core/Src/fifo.c **** 					sprintf(response,"<Error:mw32 address data\n"); // help
+ 583              		.loc 1 96 6 is_stmt 1 view .LVU140
+ 584 01a6 26A9     		add	r1, sp, #152
+ 585 01a8 4A4B     		ldr	r3, .L28+36
+ 586 01aa 0A00     		movs	r2, r1
+ 587 01ac 13CB     		ldmia	r3!, {r0, r1, r4}
+ 588 01ae 13C2     		stmia	r2!, {r0, r1, r4}
+ 589 01b0 13CB     		ldmia	r3!, {r0, r1, r4}
+ 590 01b2 13C2     		stmia	r2!, {r0, r1, r4}
+ 591 01b4 1B88     		ldrh	r3, [r3]
+ 592 01b6 1380     		strh	r3, [r2]
+  97:Core/Src/fifo.c **** 					res_length = 25;
+ 593              		.loc 1 97 6 view .LVU141
+ 594              	.LVL50:
+  97:Core/Src/fifo.c **** 					res_length = 25;
+ 595              		.loc 1 97 17 is_stmt 0 view .LVU142
+ 596 01b8 1925     		movs	r5, #25
+ 597              	.LVL51:
+ 598              	.L19:
+  99:Core/Src/fifo.c **** 				HAL_UART_Transmit(&testUartHandle, (uint8_t *) response,res_length,1000); // output, the length
+ 599              		.loc 1 99 5 is_stmt 1 view .LVU143
+ 600 01ba FA23     		movs	r3, #250
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 16
+
+
+ 601 01bc AAB2     		uxth	r2, r5
+ 602 01be 9B00     		lsls	r3, r3, #2
+ 603 01c0 26A9     		add	r1, sp, #152
+ 604 01c2 3D48     		ldr	r0, .L28+8
+ 605 01c4 FFF7FEFF 		bl	HAL_UART_Transmit
+ 606              	.LVL52:
+ 607              	.L17:
+ 102:Core/Src/fifo.c **** 		if (strcmp(testCmd.cmd,"timer")==0) 
+ 608              		.loc 1 102 3 view .LVU144
+ 102:Core/Src/fifo.c **** 		if (strcmp(testCmd.cmd,"timer")==0) 
+ 609              		.loc 1 102 21 is_stmt 0 view .LVU145
+ 610 01c8 8023     		movs	r3, #128
+ 611 01ca 6A46     		mov	r2, sp
+ 612 01cc 0824     		movs	r4, #8
+ 613 01ce 1219     		adds	r2, r2, r4
+ 614 01d0 D058     		ldr	r0, [r2, r3]
+ 102:Core/Src/fifo.c **** 		if (strcmp(testCmd.cmd,"timer")==0) 
+ 615              		.loc 1 102 7 view .LVU146
+ 616 01d2 4149     		ldr	r1, .L28+40
+ 617 01d4 FFF7FEFF 		bl	strcmp
+ 618              	.LVL53:
+ 102:Core/Src/fifo.c **** 		if (strcmp(testCmd.cmd,"timer")==0) 
+ 619              		.loc 1 102 6 view .LVU147
+ 620 01d8 0028     		cmp	r0, #0
+ 621 01da 3BD1     		bne	.L20
+ 104:Core/Src/fifo.c **** 				if((testCmd.param1!=NULL)&&(testCmd.param2!=NULL))
+ 622              		.loc 1 104 5 is_stmt 1 view .LVU148
+ 104:Core/Src/fifo.c **** 				if((testCmd.param1!=NULL)&&(testCmd.param2!=NULL))
+ 623              		.loc 1 104 16 is_stmt 0 view .LVU149
+ 624 01dc 8423     		movs	r3, #132
+ 625 01de 6A46     		mov	r2, sp
+ 626 01e0 1219     		adds	r2, r2, r4
+ 627 01e2 D358     		ldr	r3, [r2, r3]
+ 104:Core/Src/fifo.c **** 				if((testCmd.param1!=NULL)&&(testCmd.param2!=NULL))
+ 628              		.loc 1 104 7 view .LVU150
+ 629 01e4 002B     		cmp	r3, #0
+ 630 01e6 1AD0     		beq	.L21
+ 104:Core/Src/fifo.c **** 				if((testCmd.param1!=NULL)&&(testCmd.param2!=NULL))
+ 631              		.loc 1 104 40 discriminator 1 view .LVU151
+ 632 01e8 8823     		movs	r3, #136
+ 633 01ea 6A46     		mov	r2, sp
+ 634 01ec 1219     		adds	r2, r2, r4
+ 635 01ee D358     		ldr	r3, [r2, r3]
+ 104:Core/Src/fifo.c **** 				if((testCmd.param1!=NULL)&&(testCmd.param2!=NULL))
+ 636              		.loc 1 104 30 discriminator 1 view .LVU152
+ 637 01f0 002B     		cmp	r3, #0
+ 638 01f2 14D0     		beq	.L21
+ 639              	.LBB3:
+ 106:Core/Src/fifo.c **** 					uint16_t TimerCnt = htim3.Instance->CNT; // Base timer counter
+ 640              		.loc 1 106 6 is_stmt 1 view .LVU153
+ 106:Core/Src/fifo.c **** 					uint16_t TimerCnt = htim3.Instance->CNT; // Base timer counter
+ 641              		.loc 1 106 31 is_stmt 0 view .LVU154
+ 642 01f4 394B     		ldr	r3, .L28+44
+ 643 01f6 1868     		ldr	r0, [r3]
+ 106:Core/Src/fifo.c **** 					uint16_t TimerCnt = htim3.Instance->CNT; // Base timer counter
+ 644              		.loc 1 106 40 view .LVU155
+ 645 01f8 426A     		ldr	r2, [r0, #36]
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 17
+
+
+ 646              	.LVL54:
+ 107:Core/Src/fifo.c **** 					uint16_t TimerCC3Cnt = htim3.Instance->CCR3; // input capture 3 register
+ 647              		.loc 1 107 6 is_stmt 1 view .LVU156
+ 107:Core/Src/fifo.c **** 					uint16_t TimerCC3Cnt = htim3.Instance->CCR3; // input capture 3 register
+ 648              		.loc 1 107 43 is_stmt 0 view .LVU157
+ 649 01fa C36B     		ldr	r3, [r0, #60]
+ 650              	.LVL55:
+ 108:Core/Src/fifo.c **** 					uint16_t TimerCC4Cnt = htim3.Instance->CCR4; // input capture 4 register
+ 651              		.loc 1 108 6 is_stmt 1 view .LVU158
+ 108:Core/Src/fifo.c **** 					uint16_t TimerCC4Cnt = htim3.Instance->CCR4; // input capture 4 register
+ 652              		.loc 1 108 43 is_stmt 0 view .LVU159
+ 653 01fc 016C     		ldr	r1, [r0, #64]
+ 654              	.LVL56:
+ 109:Core/Src/fifo.c **** 					uint16_t TimerSR = htim3.Instance->DIER; // Status register
+ 655              		.loc 1 109 6 is_stmt 1 view .LVU160
+ 109:Core/Src/fifo.c **** 					uint16_t TimerSR = htim3.Instance->DIER; // Status register
+ 656              		.loc 1 109 39 is_stmt 0 view .LVU161
+ 657 01fe C068     		ldr	r0, [r0, #12]
+ 658              	.LVL57:
+ 111:Core/Src/fifo.c **** 					sprintf(response,"<OK:%0#6x, %0#6x, %0#6x, %0#6x\n", (unsigned int) TimerCnt,(unsigned int) Ti
+ 659              		.loc 1 111 6 is_stmt 1 view .LVU162
+ 660 0200 1B04     		lsls	r3, r3, #16
+ 661              	.LVL58:
+ 111:Core/Src/fifo.c **** 					sprintf(response,"<OK:%0#6x, %0#6x, %0#6x, %0#6x\n", (unsigned int) TimerCnt,(unsigned int) Ti
+ 662              		.loc 1 111 6 is_stmt 0 view .LVU163
+ 663 0202 1B0C     		lsrs	r3, r3, #16
+ 664 0204 1204     		lsls	r2, r2, #16
+ 665              	.LVL59:
+ 111:Core/Src/fifo.c **** 					sprintf(response,"<OK:%0#6x, %0#6x, %0#6x, %0#6x\n", (unsigned int) TimerCnt,(unsigned int) Ti
+ 666              		.loc 1 111 6 view .LVU164
+ 667 0206 120C     		lsrs	r2, r2, #16
+ 668 0208 0004     		lsls	r0, r0, #16
+ 669              	.LVL60:
+ 111:Core/Src/fifo.c **** 					sprintf(response,"<OK:%0#6x, %0#6x, %0#6x, %0#6x\n", (unsigned int) TimerCnt,(unsigned int) Ti
+ 670              		.loc 1 111 6 view .LVU165
+ 671 020a 000C     		lsrs	r0, r0, #16
+ 672 020c 0190     		str	r0, [sp, #4]
+ 673 020e 0904     		lsls	r1, r1, #16
+ 674              	.LVL61:
+ 111:Core/Src/fifo.c **** 					sprintf(response,"<OK:%0#6x, %0#6x, %0#6x, %0#6x\n", (unsigned int) TimerCnt,(unsigned int) Ti
+ 675              		.loc 1 111 6 view .LVU166
+ 676 0210 090C     		lsrs	r1, r1, #16
+ 677 0212 0091     		str	r1, [sp]
+ 678 0214 3249     		ldr	r1, .L28+48
+ 679 0216 26A8     		add	r0, sp, #152
+ 680 0218 FFF7FEFF 		bl	sprintf
+ 681              	.LVL62:
+ 112:Core/Src/fifo.c **** 					res_length = 35;
+ 682              		.loc 1 112 6 is_stmt 1 view .LVU167
+ 112:Core/Src/fifo.c **** 					res_length = 35;
+ 683              		.loc 1 112 17 is_stmt 0 view .LVU168
+ 684 021c 2325     		movs	r5, #35
+ 685              	.LVL63:
+ 686              	.L21:
+ 112:Core/Src/fifo.c **** 					res_length = 35;
+ 687              		.loc 1 112 17 view .LVU169
+ 688              	.LBE3:
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 18
+
+
+ 114:Core/Src/fifo.c **** 				if(strcmp(testCmd.param1,"go")==0)
+ 689              		.loc 1 114 5 is_stmt 1 view .LVU170
+ 114:Core/Src/fifo.c **** 				if(strcmp(testCmd.param1,"go")==0)
+ 690              		.loc 1 114 22 is_stmt 0 view .LVU171
+ 691 021e 8423     		movs	r3, #132
+ 692 0220 6A46     		mov	r2, sp
+ 693 0222 0821     		movs	r1, #8
+ 694 0224 5218     		adds	r2, r2, r1
+ 695 0226 D058     		ldr	r0, [r2, r3]
+ 114:Core/Src/fifo.c **** 				if(strcmp(testCmd.param1,"go")==0)
+ 696              		.loc 1 114 8 view .LVU172
+ 697 0228 2E49     		ldr	r1, .L28+52
+ 698 022a FFF7FEFF 		bl	strcmp
+ 699              	.LVL64:
+ 114:Core/Src/fifo.c **** 				if(strcmp(testCmd.param1,"go")==0)
+ 700              		.loc 1 114 7 view .LVU173
+ 701 022e 0028     		cmp	r0, #0
+ 702 0230 23D0     		beq	.L26
+ 703              	.LVL65:
+ 704              	.L22:
+ 120:Core/Src/fifo.c **** 				if(strcmp(testCmd.param1,"stop")==0)
+ 705              		.loc 1 120 5 is_stmt 1 view .LVU174
+ 120:Core/Src/fifo.c **** 				if(strcmp(testCmd.param1,"stop")==0)
+ 706              		.loc 1 120 22 is_stmt 0 view .LVU175
+ 707 0232 8423     		movs	r3, #132
+ 708 0234 6A46     		mov	r2, sp
+ 709 0236 0821     		movs	r1, #8
+ 710 0238 5218     		adds	r2, r2, r1
+ 711 023a D058     		ldr	r0, [r2, r3]
+ 120:Core/Src/fifo.c **** 				if(strcmp(testCmd.param1,"stop")==0)
+ 712              		.loc 1 120 8 view .LVU176
+ 713 023c 2A49     		ldr	r1, .L28+56
+ 714 023e FFF7FEFF 		bl	strcmp
+ 715              	.LVL66:
+ 120:Core/Src/fifo.c **** 				if(strcmp(testCmd.param1,"stop")==0)
+ 716              		.loc 1 120 7 view .LVU177
+ 717 0242 0028     		cmp	r0, #0
+ 718 0244 26D0     		beq	.L27
+ 719              	.LVL67:
+ 720              	.L23:
+ 126:Core/Src/fifo.c **** 				HAL_UART_Transmit(&testUartHandle, (uint8_t *) response,res_length,1000); // output, the length
+ 721              		.loc 1 126 5 is_stmt 1 view .LVU178
+ 722 0246 FA23     		movs	r3, #250
+ 723 0248 AAB2     		uxth	r2, r5
+ 724 024a 9B00     		lsls	r3, r3, #2
+ 725 024c 26A9     		add	r1, sp, #152
+ 726 024e 1A48     		ldr	r0, .L28+8
+ 727 0250 FFF7FEFF 		bl	HAL_UART_Transmit
+ 728              	.LVL68:
+ 729              	.L20:
+ 130:Core/Src/fifo.c **** 		sprintf(response,"]\n"); // output 4bytes 
+ 730              		.loc 1 130 3 view .LVU179
+ 731 0254 254B     		ldr	r3, .L28+60
+ 732 0256 1A88     		ldrh	r2, [r3]
+ 733 0258 6946     		mov	r1, sp
+ 734 025a 9820     		movs	r0, #152
+ 735 025c 0918     		adds	r1, r1, r0
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 19
+
+
+ 736 025e 0A80     		strh	r2, [r1]
+ 737 0260 9B78     		ldrb	r3, [r3, #2]
+ 738 0262 6A46     		mov	r2, sp
+ 739 0264 9A21     		movs	r1, #154
+ 740 0266 5218     		adds	r2, r2, r1
+ 741 0268 1370     		strb	r3, [r2]
+ 131:Core/Src/fifo.c **** 		res_length = 2;
+ 742              		.loc 1 131 3 view .LVU180
+ 743              	.LVL69:
+ 132:Core/Src/fifo.c **** 		HAL_UART_Transmit(&testUartHandle, (uint8_t *) response,res_length,1000); // output, the length o
+ 744              		.loc 1 132 3 view .LVU181
+ 745 026a FA23     		movs	r3, #250
+ 746 026c 9B00     		lsls	r3, r3, #2
+ 747 026e 0222     		movs	r2, #2
+ 748 0270 26A9     		add	r1, sp, #152
+ 749 0272 1148     		ldr	r0, .L28+8
+ 750 0274 FFF7FEFF 		bl	HAL_UART_Transmit
+ 751              	.LVL70:
+ 752              		.loc 1 135 1 is_stmt 0 view .LVU182
+ 753 0278 DCE6     		b	.L9
+ 754              	.LVL71:
+ 755              	.L26:
+ 116:Core/Src/fifo.c **** 					MX_TIMER_Enable();
+ 756              		.loc 1 116 6 is_stmt 1 view .LVU183
+ 757 027a FFF7FEFF 		bl	MX_TIMER_Enable
+ 758              	.LVL72:
+ 117:Core/Src/fifo.c **** 					sprintf(response,"<OK: Timer go\n"); // help
+ 759              		.loc 1 117 6 view .LVU184
+ 760 027e 26AA     		add	r2, sp, #152
+ 761 0280 1B4B     		ldr	r3, .L28+64
+ 762 0282 13CB     		ldmia	r3!, {r0, r1, r4}
+ 763 0284 13C2     		stmia	r2!, {r0, r1, r4}
+ 764 0286 1100     		movs	r1, r2
+ 765 0288 1A88     		ldrh	r2, [r3]
+ 766 028a 0A80     		strh	r2, [r1]
+ 767 028c 9B78     		ldrb	r3, [r3, #2]
+ 768 028e 8B70     		strb	r3, [r1, #2]
+ 118:Core/Src/fifo.c **** 					res_length = 14;
+ 769              		.loc 1 118 6 view .LVU185
+ 770              	.LVL73:
+ 118:Core/Src/fifo.c **** 					res_length = 14;
+ 771              		.loc 1 118 17 is_stmt 0 view .LVU186
+ 772 0290 0E25     		movs	r5, #14
+ 773 0292 CEE7     		b	.L22
+ 774              	.LVL74:
+ 775              	.L27:
+ 122:Core/Src/fifo.c **** 					MX_TIMER_Disable();
+ 776              		.loc 1 122 6 is_stmt 1 view .LVU187
+ 777 0294 FFF7FEFF 		bl	MX_TIMER_Disable
+ 778              	.LVL75:
+ 123:Core/Src/fifo.c **** 					sprintf(response,"<OK: Timer stop\n"); // help
+ 779              		.loc 1 123 6 view .LVU188
+ 780 0298 26AA     		add	r2, sp, #152
+ 781 029a 164B     		ldr	r3, .L28+68
+ 782 029c 13CB     		ldmia	r3!, {r0, r1, r4}
+ 783 029e 13C2     		stmia	r2!, {r0, r1, r4}
+ 784 02a0 1100     		movs	r1, r2
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 20
+
+
+ 785 02a2 1A68     		ldr	r2, [r3]
+ 786 02a4 0A60     		str	r2, [r1]
+ 787 02a6 1B79     		ldrb	r3, [r3, #4]
+ 788 02a8 0B71     		strb	r3, [r1, #4]
+ 124:Core/Src/fifo.c **** 					res_length = 16;
+ 789              		.loc 1 124 6 view .LVU189
+ 790              	.LVL76:
+ 124:Core/Src/fifo.c **** 					res_length = 16;
+ 791              		.loc 1 124 17 is_stmt 0 view .LVU190
+ 792 02aa 1025     		movs	r5, #16
+ 793 02ac CBE7     		b	.L23
+ 794              	.L29:
+ 795 02ae C046     		.align	2
+ 796              	.L28:
+ 797 02b0 00000000 		.word	.LC0
+ 798 02b4 08000000 		.word	.LC4
+ 799 02b8 00000000 		.word	testUartHandle
+ 800 02bc 0C000000 		.word	.LC7
+ 801 02c0 14000000 		.word	.LC9
+ 802 02c4 38000000 		.word	.LC13
+ 803 02c8 40000000 		.word	.LC15
+ 804 02cc 04000000 		.word	.LC2
+ 805 02d0 20000000 		.word	.LC11
+ 806 02d4 54000000 		.word	.LC17
+ 807 02d8 70000000 		.word	.LC19
+ 808 02dc 00000000 		.word	htim3
+ 809 02e0 78000000 		.word	.LC22
+ 810 02e4 98000000 		.word	.LC24
+ 811 02e8 AC000000 		.word	.LC28
+ 812 02ec C8000000 		.word	.LC32
+ 813 02f0 9C000000 		.word	.LC26
+ 814 02f4 B4000000 		.word	.LC30
+ 815              		.cfi_endproc
+ 816              	.LFE40:
+ 818              		.comm	ADDR,4,4
+ 819              		.text
+ 820              	.Letext0:
+ 821              		.file 2 "/Users/yanli/arm/arm-none-eabi/include/machine/_default_types.h"
+ 822              		.file 3 "/Users/yanli/arm/arm-none-eabi/include/sys/_stdint.h"
+ 823              		.file 4 "Drivers/CMSIS/Device/ST/STM32L0xx/Include/system_stm32l0xx.h"
+ 824              		.file 5 "Drivers/CMSIS/Device/ST/STM32L0xx/Include/stm32l073xx.h"
+ 825              		.file 6 "Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_def.h"
+ 826              		.file 7 "Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_dma.h"
+ 827              		.file 8 "Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_i2c.h"
+ 828              		.file 9 "Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_tim.h"
+ 829              		.file 10 "Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_uart.h"
+ 830              		.file 11 "Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal.h"
+ 831              		.file 12 "/Users/yanli/arm/arm-none-eabi/include/sys/lock.h"
+ 832              		.file 13 "/Users/yanli/arm/arm-none-eabi/include/sys/_types.h"
+ 833              		.file 14 "/Users/yanli/arm/lib/gcc/arm-none-eabi/9.2.1/include/stddef.h"
+ 834              		.file 15 "/Users/yanli/arm/arm-none-eabi/include/sys/reent.h"
+ 835              		.file 16 "Core/Inc/fifo.h"
+ 836              		.file 17 "/Users/yanli/arm/arm-none-eabi/include/sys/errno.h"
+ 837              		.file 18 "/Users/yanli/arm/arm-none-eabi/include/math.h"
+ 838              		.file 19 "/Users/yanli/arm/arm-none-eabi/include/sys/unistd.h"
+ 839              		.file 20 "Core/Inc/user_func.h"
+ 840              		.file 21 "/Users/yanli/arm/arm-none-eabi/include/stdlib.h"
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 21
+
+
+ 841              		.file 22 "/Users/yanli/arm/arm-none-eabi/include/stdio.h"
+ 842              		.file 23 "/Users/yanli/arm/arm-none-eabi/include/string.h"
+ 843              		.file 24 "Core/Inc/tim.h"
+ 844              		.file 25 "<built-in>"
+ARM GAS  /var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s 			page 22
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 fifo.c
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s:16     .text.fifoReset:0000000000000000 $t
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s:24     .text.fifoReset:0000000000000000 fifoReset
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s:48     .text.fifoWrite:0000000000000000 $t
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s:55     .text.fifoWrite:0000000000000000 fifoWrite
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s:97     .text.fifoRead:0000000000000000 $t
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s:104    .text.fifoRead:0000000000000000 fifoRead
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s:151    .rodata.fifoParser.str1.4:0000000000000000 $d
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s:200    .text.fifoParser:0000000000000000 $t
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s:207    .text.fifoParser:0000000000000000 fifoParser
+/var/folders/1q/c92fndb943774rkwjp6mf3kh0000gn/T//ccVjqwag.s:797    .text.fifoParser:00000000000002b0 $d
+                            *COM*:0000000000000004 ADDR
+
+UNDEFINED SYMBOLS
+memset
+sprintf
+HAL_UART_Transmit
+strcmp
+strtol
+mr32
+mw32
+strtok
+MX_TIMER_Enable
+MX_TIMER_Disable
+testUartHandle
+htim3
