@@ -106,7 +106,7 @@ int main(void)
   {
     /* USER CODE END WHILE */
     HAL_GPIO_TogglePin(GPIOA,LD2);
-    HAL_Delay(500);
+    HAL_Delay(200);
     fifoParser(&rxfifo);
     /* USER CODE BEGIN 3 */
   }

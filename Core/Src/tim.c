@@ -41,12 +41,12 @@ void MX_TIMER_Init(void)
   htim3.Instance->ARR = 0xFFFF;
 //  htim3.Instance->CR1 = TIM_CR1_CEN;
 
+//  MX_TIMERIC_Init();
+  MX_TIMERIC_Init();
+
  /* Configure interrupt */ 
   HAL_NVIC_SetPriority(TIM3_IRQn, 1, 0);
   HAL_NVIC_EnableIRQ(TIM3_IRQn);
-
-//  MX_TIMERIC_Init();
-  MX_TIMERIC_Init();
 
 /* Timer needs to be enabled by writing 0x01 to CR1 */
   MX_TIMER_Enable();
@@ -63,8 +63,9 @@ void MX_TIMERIC_Init(void)
   //Configure input capture IC1 and IC2, PB4 --> IC1/2
   htim3.Instance->SR = 0x0000; // Clean interrupt status register
   htim3.Instance->CCMR1 = 0x0201; // IC2 = TI1, IC1 = TI1
-  htim3.Instance->CCER = 0x0031; // IC2 falling edge, IC1 rising edge
-  htim3.Instance->DIER = 0x04; // IC2 interrupt enabled (falling edge)
+  htim3.Instance->CCMR2 = 0x0201; // IC3 = TI1, IC4 = TI1
+  htim3.Instance->CCER = 0x3131; // IC2 falling edge, IC1 rising edge; IC4 falling, IC3 rising
+  htim3.Instance->DIER = 0x10; // IC4 interrupt enabled (falling edge)
 //  htim3.Instance->CR1 = TIM_CR1_CEN;
 }
 
@@ -90,12 +91,12 @@ void TIM3_IRQHandler(void)
   uint16_t data_falling = 0; // CC register is 16bits
   uint16_t data = 0;
 
-  if((isrflags & 0x02) != 0U) // CC2IF
+  if((isrflags & 0x10) != 0U) // CC2IF
   {
-    data_rising = htim3.Instance->CCR1; //Rising edge capture counter
-    data_falling = htim3.Instance->CCR2; //Falling edge capture counter
+    data_rising = (htim3.Instance->CCR3) & 0xffff; //Rising edge capture counter
+    data_falling =(htim3.Instance->CCR4) & 0xffff; //Falling edge capture counter
     if (data_rising<data_falling) data = data_falling-data_rising; 
-    else data = 0xffff+data_falling-data_rising;
+    else data = 0xffff-data_rising+data_falling;
 
     fifoWrite(&SRF_fifo,(uint8_t) ((data>>8)&0xFF)); //Store higher 8bits
     fifoWrite(&SRF_fifo,(uint8_t) (data&0xFF)); //Store lower 8bits

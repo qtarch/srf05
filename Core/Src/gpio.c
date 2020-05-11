@@ -57,21 +57,26 @@ void MX_GPIO_Init(void)
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure SRF Output Pins Level */
-  HAL_GPIO_WritePin(GPIOB, SRF_VCC, GPIO_PIN_SET);
   HAL_GPIO_WritePin(GPIOB, SRF_TRIG, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOB, SRF_GND, GPIO_PIN_RESET);
-  GPIO_InitStruct.Pin = SRF_VCC|SRF_TRIG|SRF_GND;
+  HAL_GPIO_WritePin(GPIOA, SRF_GND, GPIO_PIN_RESET);
+  GPIO_InitStruct.Pin = SRF_TRIG|SRF_GND;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  GPIO_InitStruct.Pin = SRF_ECHO;
-  GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+  GPIO_InitStruct.Pin = SRF_ECHO|SRF_ECHO1|GPIO_PIN_0|GPIO_PIN_1; // PB4
+  GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
   GPIO_InitStruct.Alternate = GPIO_AF2_TIM3;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  GPIO_InitStruct.Pin = SRF_GND;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PB13, MCO CLOCK */
   GPIO_InitStruct.Pin = GPIO_PIN_13;

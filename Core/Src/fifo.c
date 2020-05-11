@@ -9,6 +9,7 @@
 #include "user_func.h"
 #include <string.h>
 #include <stdlib.h>
+#include "gpio.h"
 #include "tim.h"
 
 void fifoReset(fifo_typedef *fifo)
@@ -26,9 +27,12 @@ uint8_t fifoRead(fifo_typedef *fifo)
 {
 	uint8_t data;
 
-	fifo->RdIdx==0? (fifo->RdIdx=0): fifo->RdIdx--;
-	data = fifo->buf[fifo->RdIdx];
-	
+	if(fifo->WrIdx>fifo->RdIdx)
+	{
+		data = fifo->buf[fifo->RdIdx];
+		fifo->RdIdx==127? (fifo->RdIdx=0) : fifo->RdIdx++;
+	}
+	else data = 0;
 	return data;
 }
 
@@ -99,14 +103,35 @@ void fifoParser(fifo_typedef *fifo)
 				HAL_UART_Transmit(&testUartHandle, (uint8_t *) response,res_length,1000); // output, the length of output is considered 
 			}
 
+		// SRF measurement function - srf_go()
+		if (strcmp(testCmd.cmd,"srf_go")==0) 
+			{
+				testUartHandle.Instance->CR1 = 0x00; // Disable testUart
+				HAL_GPIO_WritePin(GPIOB, SRF_TRIG, GPIO_PIN_SET); // Generate a high pulse on Trigger pin
+				HAL_Delay(1);
+				HAL_GPIO_WritePin(GPIOB, SRF_TRIG, GPIO_PIN_RESET);
+				testUartHandle.Instance->CR1 = 0x2d; // Enable testUart
+				uint8_t lsb_byte=0; 
+				uint8_t msb_byte=0;
+				msb_byte=fifoRead(&SRF_fifo);
+				lsb_byte=fifoRead(&SRF_fifo);
+				unsigned int data= (unsigned int) ((msb_byte<<8)+lsb_byte);
+				double distance = data*17/2000;
+				fifoReset(&SRF_fifo);
+
+				sprintf(response,"<OK:%0#6x, Distance=%3d cm\n", (unsigned int) data, (unsigned int) distance); // output 4bytes 
+				res_length = 11+17;
+				HAL_UART_Transmit(&testUartHandle, (uint8_t *) response,res_length,1000); // output, the length of output is considered 
+			}
+
 		if (strcmp(testCmd.cmd,"timer")==0) 
 			{
 				if((testCmd.param1!=NULL)&&(testCmd.param2!=NULL))
 				{
 					uint16_t TimerCnt = htim3.Instance->CNT; // Base timer counter
-					uint16_t TimerCC3Cnt = htim3.Instance->CCR3; // input capture 3 register
-					uint16_t TimerCC4Cnt = htim3.Instance->CCR4; // input capture 4 register
-					uint16_t TimerSR = htim3.Instance->DIER; // Status register
+					uint16_t TimerCC3Cnt = htim3.Instance->CCR3; // input capture 1 register
+					uint16_t TimerCC4Cnt = htim3.Instance->CCR4; // input capture 2 register
+					uint16_t TimerSR = htim3.Instance->SR; // Status register
 
 					sprintf(response,"<OK:%0#6x, %0#6x, %0#6x, %0#6x\n", (unsigned int) TimerCnt,(unsigned int) TimerCC3Cnt, (unsigned int) TimerCC4Cnt, (unsigned int) TimerSR); // output 4bytes 
 					res_length = 35;

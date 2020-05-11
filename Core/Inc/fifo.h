@@ -21,6 +21,7 @@ typedef struct
 }fifo_typedef;
 
 extern fifo_typedef aidfifo;
+extern fifo_typedef SRF_fifo;
 
 // test command type define
 typedef struct 
