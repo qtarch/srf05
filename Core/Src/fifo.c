@@ -111,7 +111,7 @@ void fifoParser(fifo_typedef *fifo)
 				HAL_Delay(1);
 				HAL_GPIO_WritePin(GPIOB, SRF_TRIG, GPIO_PIN_RESET);
 				testUartHandle.Instance->CR1 = 0x2d; // Enable testUart
-				HAL_Delay(500); //Delay 500ms to receive the response from SRF05
+				while(SRF_fifo.RdIdx==SRF_fifo.WrIdx){}; // Wait until data is updated
 				uint8_t msb_byte=fifoRead(&SRF_fifo);
 				uint8_t lsb_byte=fifoRead(&SRF_fifo);
 				unsigned int data= (unsigned int) ((msb_byte<<8)+lsb_byte);
